@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Spp.IdentityProvider": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "workingDirectory": "bin/Debug/net8.0"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+#nullable enable
+
+namespace {{parameters.namespace}};
+{% assign modelName = this | fluid: parameters.modelNameTemplate %}
+public abstract partial class Base{{ modelName }}Controller : Microsoft.AspNetCore.Mvc.ControllerBase
+{
+{%- for path in document.paths -%}
+{%- assign resolvedPath = path[1] | resolve_referenced_object_ref -%}
+{%- if resolvedPath.get %}
+    /// <summary>
+    /// {{ resolvedPath.get.summary | default: resolvedPath.get.description | default: resolvedPath.summary | default: resolvedPath.description }}
+    /// </summary>
+    [Microsoft.AspNetCore.Mvc.HttpGet("{{ path[0] }}")]
+    public async System.Threading.Tasks.Task&lt;Microsoft.AspNetCore.Mvc.IActionResult&gt; {{ resolvedPath.get.operationId | pascal_case }}Endpoint(
+    {%- assign mergedParameters = resolvedPath.get.parameters | merge_parameters: resolvedPath.parameters -%}
+    {%- for parameter in mergedParameters -%}
+        {%- assign resolvedParameter = parameter | resolve_referenced_object_ref_recursively %}
+        {%- if resolvedParameter.in == 'path' %}
+            [Microsoft.AspNetCore.Mvc.FromRoute(Name = "{{ resolvedParameter.name }}")]
+        {%- elsif resolvedParameter.in == 'query' %}
+            [Microsoft.AspNetCore.Mvc.FromQuery(Name = "{{ resolvedParameter.name }}")]
+        {%- elsif resolvedParameter.in == 'header' %}
+            [Microsoft.AspNetCore.Mvc.FromHeader(Name = "{{ resolvedParameter.name }}")]
+        {%- endif -%}
+        {%- if resolvedParameter.required %}
+            [System.ComponentModel.DataAnnotations.Required]
+        {%- endif -%}}
+        {%- assign schema = resolvedParameter.schema | resolve_json_schema_ref_recursively -%}
+
+        {%- assign typeName = resolvedParameter.schema | resolve_type_name %}
+        {{ typeName }}{% unless resolvedParameter.required %}?{% endunless %} {{ resolvedParameter.name }},
+    {%- endfor %}
+        System.Threading.CancellationToken cancellationToken
+    )
+{%- endif -%}
+
+{%- for method in path[1] %}
+
+    /// <summary>
+    /// {{ method[1].summary | default: method[1].description }}
+    /// </summary>
+    [Microsoft.AspNetCore.Mvc.Http{{ method[0] |  pascal_case }}]
+    public async System.Threading.Tasks.Task&lt;Microsoft.AspNetCore.Mvc.IActionResult&gt; {{ method[1].operationId | pascal_case }}{{ parameters.endpointSuffix }}{{ parameters.asyncSuffix }}(
+    {%- for parameter in method[1].parameters -%}
+        {%- assign resolvedParameter = parameter | resolve_ref %}
+        {%- if parameter.in == 'path' %}
+        [Microsoft.AspNetCore.Mvc.FromRoute(Name = "{{ parameter.name }}")]
+        {%- elsif parameter.in == 'query' %}
+        [Microsoft.AspNetCore.Mvc.FromQuery(Name = "{{ parameter.name }}")]
+        {%- elsif parameter.in == 'header' %}
+        [Microsoft.AspNetCore.Mvc.FromHeader(Name = "{{ parameter.name }}")]
+        {%- endif -%}
+        {%- if parameter.required %}
+        [System.ComponentModel.DataAnnotations.Required]
+        {%- endif %}
+    {%- endfor %}
+    )
+{% endfor -%}
+{% endfor %}
+}
+
+#nullable restore
+
+namespace {{parameters.namespace}};
+
+{% assign modelName = this | fluid: parameters.pathsModelNameTemplate -%}
+internal static class {{ modelName }}Paths
+{
+{% for path in document.paths -%}
+{% for method in path[1] -%}
+{{ noop }}    public const string {{method[1].operationId | pascalcase}} = "{{path[0]}}";
+{% endfor -%}
+{% endfor -%}
+}

@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultContentItems>true</EnableDefaultContentItems>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <InvariantGlobalization>false</InvariantGlobalization>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\..\http\*.http">
+            <Link>http\%(FileName)%(Extension)</Link>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.18.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+        <PackageReference Include="xunit" Version="2.7.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="IntegrationMocks.Modules.AspNetCore" Version="2.1.1" />
+        <PackageReference Include="IntegrationMocks.Modules.Yugabyte" Version="2.1.1" />
+    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Spp.Common.TestHelpers" Version="0.0.1" />
+	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Spp.IdentityProvider.Client/Spp.IdentityProvider.Client.csproj" />
+        <ProjectReference Include="../Spp.IdentityProvider.TestClient/Spp.IdentityProvider.TestClient.csproj" />
+        <ProjectReference Include="../Spp.IdentityProvider.TestServer/Spp.IdentityProvider.TestServer.csproj" />
+        <ProjectReference Include="../Spp.IdentityProvider/Spp.IdentityProvider.csproj" />
+    </ItemGroup>
+</Project>

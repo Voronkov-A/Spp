@@ -1,0 +1,11 @@
+@base=https://localhost:34008
+
+### SignIn
+
+POST {{base}}/v1/auth/sign-in
+Content-Type: application/json
+
+{
+  "username": "superuser",
+  "password": "pass"
+}

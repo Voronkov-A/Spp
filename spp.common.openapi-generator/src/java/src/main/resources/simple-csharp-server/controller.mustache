@@ -1,0 +1,110 @@
+[Microsoft.AspNetCore.Mvc.ApiController]
+public abstract partial class Base{{classname}}Controller : Microsoft.AspNetCore.Mvc.ControllerBase
+{
+    {{#operation}}
+    /// <summary>
+    /// {{notes}}
+    /// </summary>
+    [{{httpMethod}}("{{path}}")]
+    public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> {{operationIdCamelCase}}Endpoint(
+        {{#allParams}}
+{{>controllerMethodParameter}},
+        {{/allParams}}
+        System.Threading.CancellationToken cancellationToken
+    )
+    {
+        return await {{operationIdCamelCase}}(
+            {{#allParams}}
+            {{paramName}},
+            {{/allParams}}
+            cancellationToken
+        );
+    }
+
+    {{/operation}}
+    {{#operation}}
+    /// <summary>
+    /// {{notes}}
+    /// </summary>
+    protected abstract System.Threading.Tasks.Task<{{operationIdCamelCase}}ActionResult> {{operationIdCamelCase}}(
+        {{#allParams}}
+        {{dataType}} {{paramName}},
+        {{/allParams}}
+        System.Threading.CancellationToken cancellationToken
+    );
+    {{/operation}}
+
+    {{#operation}}
+    public readonly struct {{operationIdCamelCase}}ActionResult : Microsoft.AspNetCore.Mvc.IActionResult
+    {
+        private const int Default = -1;
+
+        private readonly Microsoft.AspNetCore.Mvc.IActionResult? _raw;
+
+        private {{operationIdCamelCase}}ActionResult(Microsoft.AspNetCore.Mvc.IActionResult? raw)
+        {
+            _raw = raw;
+        }
+
+        public async System.Threading.Tasks.Task ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext context)
+        {
+            await (_raw ?? new Microsoft.AspNetCore.Mvc.NoContentResult()).ExecuteResultAsync(context);
+        }
+
+        {{#responses}}
+        public static {{operationIdCamelCase}}ActionResult Create{{code}}(
+            {{#dataType}}
+            Microsoft.AspNetCore.Mvc.ActionResult<{{dataType}}> result
+            {{/dataType}}
+            {{^dataType}}
+            Microsoft.AspNetCore.Mvc.Infrastructure.IStatusCodeActionResult result
+            {{/dataType}}
+        )
+        {
+            {{#dataType}}
+            if (result.Value == null)
+            {
+                throw new System.InvalidOperationException("Result value must not be null.");
+            }
+
+            return new {{operationIdCamelCase}}ActionResult(raw: new Microsoft.AspNetCore.Mvc.ObjectResult(result.Value)
+            {
+                StatusCode = {{code}}
+            });
+            {{/dataType}}
+            {{^dataType}}
+            if (result.StatusCode != {{code}} && {{code}} != Default)
+            {
+                throw new System.InvalidOperationException($"Expected status code {{code}}, but got {result.StatusCode}.");
+            }
+
+            return new {{operationIdCamelCase}}ActionResult(raw: result);
+            {{/dataType}}
+        }
+
+        public static {{operationIdCamelCase}}ActionResult Create{{code}}(
+            {{#dataType}}
+            {{dataType}} result
+            {{/dataType}}
+        )
+        {
+            {{#dataType}}
+            var actionResult = new Microsoft.AspNetCore.Mvc.ObjectResult(result)
+            {
+                StatusCode = {{code}}
+            };
+            {{/dataType}}
+            {{^dataType}}
+            var actionResult = new Microsoft.AspNetCore.Mvc.StatusCodeResult({{code}});
+            {{/dataType}}
+            return new {{operationIdCamelCase}}ActionResult(raw: actionResult);
+        }
+
+        {{/responses}}
+        public static {{operationIdCamelCase}}ActionResult CreateRaw(Microsoft.AspNetCore.Mvc.IActionResult result)
+        {
+            return new {{operationIdCamelCase}}ActionResult(raw: result);
+        }
+    }
+    {{/operation}}
+}

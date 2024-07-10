@@ -1,0 +1,37 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization GeneratedUserNameParts events
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+
+    GeneratedUserNamePartCreated:
+      description: Generated user name part created.
+      type: object
+      required:
+        - value
+        - type
+      properties:
+        value:
+          description: Value.
+          type: string
+        type:
+          allOf:
+            - description: Type.
+            - $ref: '#/components/schemas/GeneratedUserNamePartType'
+
+    GeneratedUserNamePartDeleted:
+      allOf:
+        - description: Generated user name part deleted.
+          type: object
+
+    GeneratedUserNamePartType:
+      description: Generated user name part type.
+      type: string
+      enum:
+        - firstName
+        - lastName

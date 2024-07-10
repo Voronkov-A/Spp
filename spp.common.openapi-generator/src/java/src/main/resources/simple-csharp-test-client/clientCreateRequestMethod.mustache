@@ -1,0 +1,71 @@
+    private System.Net.Http.HttpRequestMessage {{operationIdCamelCase}}_CreateRequest(
+        {{#allParams}}
+        {{dataType}}{{^required}}?{{/required}} {{paramName}}{{^-last}},{{/-last}}
+        {{/allParams}}
+    )
+    {
+        var path = "{{path}}";
+
+        {{#pathParams}}
+        path = path.Replace("{" + "{{baseName}}" + "}", {{paramName}}.ToString());
+        {{/pathParams}}
+
+        var uriBuilder = new System.Text.StringBuilder(path);
+
+        {{#queryParams}}
+        {{#-first}}
+        var separator = '?';
+
+        {{/-first}}
+        if (true{{^required}} && {{paramName}} != null{{/required}})
+        {
+            uriBuilder
+                .Append(separator)
+                .Append("{{baseName}}=")
+                .Append(UrlEncode({{#isEnum}}Enum{{/isEnum}}{{^isEnum}}Value{{/isEnum}}ToString({{paramName}}{{^required}} ?? throw new System.InvalidOperationException("Unexpected null value."){{/required}})));
+            separator = '&';
+        }
+        {{/queryParams}}
+
+        var uri = uriBuilder.ToString();
+        System.Net.Http.HttpRequestMessage? request = null;
+        try
+        {
+            request = new System.Net.Http.HttpRequestMessage({{httpMethod}}, uri);
+
+            {{#bodyParams}}
+            var content = true{{^required}} && {{paramName}} != null{{/required}}
+                ? System.Net.Http.Json.JsonContent.Create({{paramName}}, options: _jsonSerializerOptions)
+                : null;
+            request.Content = content;
+            {{/bodyParams}}
+            {{#formParams}}
+            {{#-first}}
+            var contentItems = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>();
+            {{/-first}}
+            if (true{{^required}} && {{paramName}} != null{{/required}})
+            {
+                contentItems.Add(
+                    System.Collections.Generic.KeyValuePair.Create("{{baseName}}",
+                    {{#isEnum}}Enum{{/isEnum}}{{^isEnum}}Value{{/isEnum}}ToString({{paramName}}{{^required}} ?? throw new System.InvalidOperationException("Unexpected null value."){{/required}})));
+            }
+            {{#-last}}
+            request.Content = new System.Net.Http.FormUrlEncodedContent(contentItems);
+            {{/-last}}
+            {{/formParams}}
+
+            {{#headerParams}}
+            if (true{{^required}} && {{paramName}} != null{{/required}})
+            {
+                request.Headers.TryAddWithoutValidation("{{baseName}}", {{paramName}}.ToString());
+            }
+            {{/headerParams}}
+
+            return request;
+        }
+        catch
+        {
+            request?.Dispose();
+            throw;
+        }
+    }

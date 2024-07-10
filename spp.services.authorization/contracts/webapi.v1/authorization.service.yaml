@@ -1,0 +1,46 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization Service API
+  version: 1.0.0
+
+paths:
+
+  /v1/service/health:
+    get:
+      description: Check health.
+      operationId: HealthCheck
+      tags:
+        - Service
+      responses:
+        '200':
+          description: Service health status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  responses:
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    HealthStatus:
+      description: Service health status.
+      type: string
+      enum:
+        - unhealthy
+        - degraded
+        - healthy
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

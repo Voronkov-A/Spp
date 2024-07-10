@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <Description>Spp.Common.OpenApiGenerator.Modules.SimpleCsharp.Server.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\**\*.*">
+      <Link>Content\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Spp.Common.OpenApiGenerator/Spp.Common.OpenApiGenerator.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Spp.Common.OpenApiGenerator.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>

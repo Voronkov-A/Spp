@@ -1,0 +1,14 @@
+#nullable enable
+
+namespace {{parameters.namespace}};
+{% assign modelName = this | fluid: parameters.pathsModelNameTemplate %}
+internal static class {{ modelName }}Paths
+{
+{%- for path in document.paths -%}
+{%- for method in path[1] %}
+    public const string {{method[1].operationId | pascal_case}} = "{{path[0]}}";
+{%- endfor -%}
+{%- endfor %}
+}
+
+#nullable restore

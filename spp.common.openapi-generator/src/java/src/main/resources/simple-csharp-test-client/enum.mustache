@@ -1,0 +1,12 @@
+/// <summary>
+/// {{description}}
+/// </summary>
+public enum {{classname}}
+{
+    {{#allowableValues}}
+    {{#enumValues}}
+    [System.Runtime.Serialization.EnumMember(Value = "{{value}}")]
+    {{nameInPascalCase}}{{#-first}} = 0{{/-first}}{{^-last}},{{/-last}}
+    {{/enumValues}}
+    {{/allowableValues}}
+}

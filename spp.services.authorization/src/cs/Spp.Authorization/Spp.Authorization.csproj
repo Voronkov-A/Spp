@@ -1,0 +1,78 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="appsettings.json" CopyToOutputDirectory="Always">
+			<Link>appsettings.json</Link>
+		</Content>
+		<Content Include="../../../certificates/localhost.crt" CopyToOutputDirectory="Always">
+			<Link>Certificates/localhost.crt</Link>
+		</Content>
+		<Content Include="../../../certificates/localhost.pfx" CopyToOutputDirectory="Always">
+			<Link>Certificates/localhost.pfx</Link>
+		</Content>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.auth.yaml">
+			<Link>WebApi\Auth\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.callback.yaml">
+			<Link>WebApi\Callback\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.common.yaml">
+			<Link>WebApi\Common\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.connect.yaml">
+			<Link>WebApi\Connect\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.rbac.yaml">
+			<Link>WebApi\Rbac\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.service.yaml">
+			<Link>WebApi\Service\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="..\..\..\contracts\webapi.v1\authorization.users.yaml">
+			<Link>WebApi\Users\V1\%(FileName)%(Extension)</Link>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.18" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Spp.Common.Authentication" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Authentication.Oidc" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Authentication.TokenAuthenticationScheme.IdentityServer" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Errors" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.EventSourcing.EventStore.Postgres" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Hosting" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Http" Version="0.0.1" />
+		<PackageReference Include="Spp.IdentityProvider.Client" Version="0.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../Spp.Authorization.Client/Spp.Authorization.Client.csproj" />
+		<ProjectReference Include="../Spp.Authorization.Events/Spp.Authorization.Events.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>Spp.Authorization.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+</Project>

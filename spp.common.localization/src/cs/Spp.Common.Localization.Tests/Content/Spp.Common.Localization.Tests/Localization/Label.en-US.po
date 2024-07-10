@@ -1,0 +1,4 @@
+msgctxt "Spp.Common.Localization.Tests.Localization.Label"
+
+msgid "HelloWorld"
+msgstr "Hello, world!"

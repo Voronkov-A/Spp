@@ -1,0 +1,37 @@
+---
+openapi: 3.1.0
+info:
+  title: IdentityProvider Errors API
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+
+    IdentityProviderErrorCode:
+      description: IdentityProvider error code.
+      type: string
+      enum:
+        - identityProvider.duplicateClientId
+        - identityProvider.duplicateUsername
+
+    DuplicateClientIdErrorParameters:
+      description: Parameters for identityProvider.duplicateClientId error code.
+      type: object
+      required:
+        - clientId
+      properties:
+        clientId:
+          description: Client id.
+          type: string
+
+    DuplicateUsernameErrorParameters:
+      description: Parameters for identityProvider.duplicateUsername error code.
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          description: Username.
+          type: string

@@ -1,0 +1,114 @@
+---
+openapi: 3.1.0
+info:
+  title: Sample API
+  version: 1.0.0
+paths:
+
+  /api/users:
+    post:
+      description: Create user.
+      operationId: Users_Create
+      tags:
+        - Users
+      requestBody:
+        description: User data.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  responses:
+
+    BadRequestErrorResponse:
+      description: Validation errors occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    CreateUserRequest:
+      description: Create user request.
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: User name.
+          type: string
+
+    CreateUserResponse:
+      description: Create user response.
+      type: object
+      additionalProperties: false
+      required:
+        - id
+      properties:
+        id:
+          description: User identifier.
+          type: string
+
+    ProblemDetails:
+      description: Error model based on https://tools.ietf.org/html/rfc7807.
+      type: object
+      additionalProperties:
+        description: Unspecified extensions.
+        anyOf: []
+      required:
+        - type
+        - title
+        - status
+        - detail
+      properties:
+        type:
+          description: |
+            Absolute URI reference [RFC3986] that identifies the problem type.
+            Format of URI is following: http[s]://{docServiceHost}:{docServicePort}/errors/{errorCode},
+            where {errorCode} matches regex '^[a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z][a-zA-Z0-9]*$'
+          type: string
+          format: uri
+          example: 'https://prostoquasha.doc:8080/errors/common/unknown'
+        title:
+          description: Short, human-readable summary of the problem type.
+          type: string
+        status:
+          description: HTTP status code (duplicate of status code).
+          type: integer
+        detail:
+          description: Human-readable explanation specific to this occurrence of the problem.
+          type: string
+        instance:
+          description: |
+            URI reference that identifies the specific occurrence of the problem.
+            This property is not used in the system yet, but is specified in standard.
+          type: string
+          format: uri
+          nullable: true
+
+    CommonErrorCode:
+      description: Error codes that are common for all services.
+      type: string
+      enum:
+        - common.unknown

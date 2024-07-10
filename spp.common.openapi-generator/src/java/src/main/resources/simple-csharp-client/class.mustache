@@ -1,0 +1,33 @@
+/// <summary>
+/// {{description}}
+/// </summary>
+{{#discriminator}}
+[System.Text.Json.Serialization.JsonPolymorphic(TypeDiscriminatorPropertyName = "{{{discriminatorName}}}")]
+{{#mappedModels}}
+[System.Text.Json.Serialization.JsonDerivedType(typeof({{{modelName}}}), "{{{mappingName}}}")]
+{{/mappedModels}}
+{{/discriminator}}
+public partial class {{classname}}{{#parent}} : {{{.}}}{{/parent}}
+{
+    public {{classname}}(
+        {{#vars}}
+        {{{dataType}}}{{^required}}?{{/required}} {{name}}{{^-last}},{{/-last}}
+        {{/vars}}
+    )
+    {
+        {{#vars}}
+        this.{{nameInCamelCase}} = {{name}};
+        {{/vars}}
+    }
+
+    {{#vars}}
+    /// <summary>
+    /// {{description}}
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("{{baseName}}")]
+    {{#additionalPropertiesIsAnyType}}
+    [System.Text.Json.Serialization.JsonExtensionData]
+    {{/additionalPropertiesIsAnyType}}
+    public {{{dataType}}}{{^required}}?{{/required}} {{nameInCamelCase}} { get; }
+    {{/vars}}
+}

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <Description>Spp.Common.EventSourcing.EventStore.Postgres.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <!--
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        -->
+        <PackageReference Include="Spp.Common.Configuration" Version="0.0.1" />
+        <PackageReference Include="Spp.Common.Migrations.Postgres" Version="0.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Spp.Common.EventSourcing.EventStore/Spp.Common.EventSourcing.EventStore.csproj" />
+    </ItemGroup>
+</Project>

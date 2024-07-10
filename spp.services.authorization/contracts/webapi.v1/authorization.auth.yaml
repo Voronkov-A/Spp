@@ -1,0 +1,106 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization Auth API
+  version: 1.0.0
+
+paths:
+
+  /v1/auth/user-info:
+    get:
+      description: Get user info.
+      operationId: GetUserInfo
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: User info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserInfoResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+
+  /v1/auth/sign-in/identity-provider:
+    get:
+      description: Sign-in with IdentityProvider.
+      operationId: SignInWithIndentityProvider
+      tags:
+        - Auth
+      parameters:
+        - name: redirect_uri
+          in: query
+          required: true
+          description: Redirect URI.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: Redirect.
+          headers:
+            Location:
+              description: Redirect URI.
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  responses:
+
+    BadRequestErrorResponse:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    UnauthorizedErrorResponse:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ForbiddenErrorResponse:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFoundErrorResponse:
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    GetUserInfoResponse:
+      description: User info.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: User identifier.
+          type: string
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

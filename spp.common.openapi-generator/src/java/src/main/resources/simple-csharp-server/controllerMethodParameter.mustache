@@ -1,0 +1,16 @@
+        {{#isPathParam}}
+        [Microsoft.AspNetCore.Mvc.FromRoute(Name = "{{baseName}}")]
+        {{/isPathParam}}
+        {{#isQueryParam}}
+        [Microsoft.AspNetCore.Mvc.FromQuery(Name = "{{baseName}}")]
+        {{/isQueryParam}}
+        {{#isBodyParam}}
+        [Microsoft.AspNetCore.Mvc.FromBody]
+        {{/isBodyParam}}
+        {{#isHeaderParam}}
+        [Microsoft.AspNetCore.Mvc.FromHeader(Name = "{{baseName}}")]
+        {{/isHeaderParam}}
+        {{#required}}
+        [System.ComponentModel.DataAnnotations.Required]
+        {{/required}}
+        {{dataType}}{{^required}}?{{/required}} {{paramName}}

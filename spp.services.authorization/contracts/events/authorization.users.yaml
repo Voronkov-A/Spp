@@ -1,0 +1,88 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization Users events
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+
+    UserCreated:
+      description: User created.
+      type: object
+      required:
+        - name
+        - isSuperuser
+        - identities
+        - roleIds
+      properties:
+        name:
+          description: Name.
+          type: string
+        isSuperuser:
+          description: Is superuser.
+          type: boolean
+        identities:
+          description: Identities.
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentity'
+        roleIds:
+          description: Role identifiers.
+          type: array
+          items:
+            type: string
+
+    UserBlocked:
+      allOf:
+        - description: User blocked.
+          type: object
+
+    UserUnblocked:
+      allOf:
+        - description: User unblocked.
+          type: object
+
+    UserRenamed:
+      description: User renamed.
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name.
+          type: string
+
+    UserRoleAssigned:
+      description: User role assigned.
+      type: object
+      required:
+        - roleId
+      properties:
+        roleId:
+          description: Role identifier.
+          type: string
+
+    UserRoleUnassigned:
+      description: User role unassigned.
+      type: object
+      required:
+        - roleId
+      properties:
+        roleId:
+          description: Role identifier.
+          type: string
+
+    UserIdentity:
+      description: User identity.
+      type: object
+      required:
+        - providerId
+        - subjectId
+      properties:
+        providerId:
+          type: string
+        subjectId:
+          type: string

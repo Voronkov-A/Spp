@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultContentItems>true</EnableDefaultContentItems>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <InvariantGlobalization>false</InvariantGlobalization>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="Content\**\*.*">
+            <Link>Content\%(RecursiveDir)%(FileName)%(Extension)</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Content\Spp.Common.Localization.Tests\Localization\LocalizedResource.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.18.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+        <PackageReference Include="xunit" Version="2.7.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="IntegrationMocks.Modules.AspNetCore" Version="1.1.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Spp.Common.Localization.AspNetCore/Spp.Common.Localization.AspNetCore.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,55 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization Callback API
+  version: 1.0.0
+
+paths:
+
+  /v1/callback:
+    get:
+      description: Sign-in callback.
+      operationId: Callback
+      tags:
+        - Callback
+      #parameters:
+      #  - name: redirect_uri
+      #    in: query
+      #    required: true
+      #    description: Redirect URI.
+      #    schema:
+      #      type: string
+      responses:
+        '302':
+          description: Redirect.
+          headers:
+            Location:
+              description: Redirect URI.
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  responses:
+
+    BadRequestErrorResponse:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

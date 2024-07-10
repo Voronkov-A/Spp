@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <Description>Spp.IdentityProvider.TestServer.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="IntegrationMocks.Core" Version="2.1.1" />
+        <PackageReference Include="IntegrationMocks.Modules.Sql" Version="2.1.1" />
+        <PackageReference Include="IntegrationMocks.Modules.Testcontainers" Version="2.1.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="../Spp.IdentityProvider.TestClient/Spp.IdentityProvider.TestClient.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.Localization", "Spp.Common.Localization\Spp.Common.Localization.csproj", "{77922B3B-C6AE-4CB4-845A-FE4E9D992041}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.Localization.AspNetCore", "Spp.Common.Localization.AspNetCore\Spp.Common.Localization.AspNetCore.csproj", "{65F8BC1E-1B1C-4718-A56D-26849C146AED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.Localization.Tests", "Spp.Common.Localization.Tests\Spp.Common.Localization.Tests.csproj", "{F0990285-1B12-470F-89B8-2202F1EAA64A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77922B3B-C6AE-4CB4-845A-FE4E9D992041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77922B3B-C6AE-4CB4-845A-FE4E9D992041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77922B3B-C6AE-4CB4-845A-FE4E9D992041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77922B3B-C6AE-4CB4-845A-FE4E9D992041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F8BC1E-1B1C-4718-A56D-26849C146AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F8BC1E-1B1C-4718-A56D-26849C146AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F8BC1E-1B1C-4718-A56D-26849C146AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F8BC1E-1B1C-4718-A56D-26849C146AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0990285-1B12-470F-89B8-2202F1EAA64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0990285-1B12-470F-89B8-2202F1EAA64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0990285-1B12-470F-89B8-2202F1EAA64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0990285-1B12-470F-89B8-2202F1EAA64A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\contracts\events\authorization.rbac.yaml">
+      <Link>Rbac\%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\contracts\events\authorization.generated-user-name-parts.yaml">
+      <Link>GeneratedUserNameParts\%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\contracts\events\authorization.users.yaml">
+      <Link>Users\%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

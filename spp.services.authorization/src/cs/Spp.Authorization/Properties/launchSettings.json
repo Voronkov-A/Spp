@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Spp.Authorization": {
+      "commandName": "Project",
+      "workingDirectory": "bin/Debug/net8.0"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+public partial interface I{{classname}}Client
+{
+    {{#operation}}
+    /// <summary>
+    /// {{notes}}
+    /// </summary>
+    System.Threading.Tasks.Task{{#responses}}{{#-first}}{{#dataType}}<{{dataType}}>{{/dataType}}{{/-first}}{{/responses}} {{operationIdCamelCase}}(
+        {{#allParams}}
+        {{dataType}}{{^required}}?{{/required}} {{paramName}},
+        {{/allParams}}
+        System.Threading.CancellationToken cancellationToken = default
+    );
+
+    {{/operation}}
+}

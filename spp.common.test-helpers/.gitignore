@@ -1,0 +1,9 @@
+/src/cs/.vs/
+/src/cs/**/bin/
+/src/cs/**/obj/
+/src/cs/**/*.csproj.user
+/src/cs/.idea/
+/src/cs/*.sln.DotSettings.user
+/build/
+/*.error.txt
+/__pycache__/

@@ -1,0 +1,13 @@
+#nullable enable
+
+namespace {{apiNamespace}};
+
+{{#operations}}
+{{>client}}
+{{/operations}}
+
+{{#operations}}
+{{>clientInterface}}
+{{/operations}}
+
+#nullable restore

@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.Postgres", "Spp.Common.Postgres\Spp.Common.Postgres.csproj", "{C11EA597-B75D-4101-BF1D-FD788712B512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.Postgres.EntityFramework", "Spp.Common.Postgres.EntityFramework\Spp.Common.Postgres.EntityFramework.csproj", "{554029F9-41C2-4E07-8678-1DC836201575}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C11EA597-B75D-4101-BF1D-FD788712B512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11EA597-B75D-4101-BF1D-FD788712B512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11EA597-B75D-4101-BF1D-FD788712B512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11EA597-B75D-4101-BF1D-FD788712B512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554029F9-41C2-4E07-8678-1DC836201575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554029F9-41C2-4E07-8678-1DC836201575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554029F9-41C2-4E07-8678-1DC836201575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554029F9-41C2-4E07-8678-1DC836201575}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

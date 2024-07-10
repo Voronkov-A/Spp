@@ -1,0 +1,239 @@
+---
+openapi: 3.1.0
+info:
+  title: IdentityProvider Applications API
+  version: 1.0.0
+
+paths:
+
+  /v1/applications:
+    post:
+      description: Create application.
+      operationId: Create
+      tags:
+        - Applications
+      requestBody:
+        description: Create application request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: Application created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateApplicationResponse'
+          headers:
+            Location:
+              description: Created resource location.
+              schema:
+                type: string
+        '400':
+          description: |
+            Bad request.
+            - identityProvider.duplicateClientId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+    get:
+      description: List applications.
+      operationId: List
+      tags:
+        - Applications
+      parameters:
+        - name: client_id
+          in: query
+          required: true
+          description: Client id.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Accessible applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationViewList'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /v1/applications/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Application id.
+        schema:
+          type: string
+    put:
+      description: Update application.
+      operationId: Update
+      tags:
+        - Applications
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Update application request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationRequest'
+      responses:
+        '204':
+          description: Application updated.
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+
+    BadRequestErrorResponse:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    UnauthorizedErrorResponse:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ForbiddenErrorResponse:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFoundErrorResponse:
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    CreateApplicationRequest:
+      description: Create application request.
+      type: object
+      required:
+        - clientId
+        - clientSecret
+        - redirectUris
+      properties:
+        clientId:
+          description: Client identifier.
+          type: string
+        clientSecret:
+          description: Client secret.
+          type: string
+        redirectUris:
+          description: Allowed redirect URIs.
+          type: array
+          items:
+            type: string
+            format: uri
+
+    CreateApplicationResponse:
+      description: Create application response.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: Application identifier.
+          type: string
+
+    UpdateApplicationRequest:
+      description: Update application request.
+      type: object
+      required:
+        - clientSecret
+        - redirectUris
+      properties:
+        clientSecret:
+          description: Client secret.
+          type: string
+        redirectUris:
+          description: Allowed redirect URIs.
+          type: array
+          items:
+            type: string
+            format: uri
+
+    ApplicationViewList:
+      description: Application list.
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationView'
+
+    ApplicationView:
+      description: Application.
+      type: object
+      required:
+        - id
+        - clientId
+        - redirectUris
+      properties:
+        id:
+          description: Application identifier.
+          type: string
+        clientId:
+          description: Client identifier.
+          type: string
+        redirectUris:
+          description: Allowed redirect URIs.
+          type: array
+          items:
+            type: string
+            format: uri
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

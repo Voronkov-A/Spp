@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <Description>Spp.Common.Subscriptions.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Spp.Common.Domain" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Mediator" Version="0.0.1" />
+  </ItemGroup>
+</Project>

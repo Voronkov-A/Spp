@@ -1,0 +1,111 @@
+public partial class {{classname}}Client : I{{classname}}Client, System.IDisposable
+{
+    private static readonly System.Net.Http.HttpMethod DELETE = System.Net.Http.HttpMethod.Delete;
+    private static readonly System.Net.Http.HttpMethod GET = System.Net.Http.HttpMethod.Get;
+    private static readonly System.Net.Http.HttpMethod POST = System.Net.Http.HttpMethod.Post;
+    private static readonly System.Net.Http.HttpMethod PUT = System.Net.Http.HttpMethod.Put;
+
+    private readonly System.Net.Http.HttpClient _httpClient;
+    private readonly System.Text.Json.JsonSerializerOptions _jsonSerializerOptions;
+
+    public {{classname}}Client(System.Net.Http.HttpClient httpClient, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions> jsonOptions)
+    {
+        _httpClient = httpClient;
+        _jsonSerializerOptions = jsonOptions.Value.SerializerOptions;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        System.GC.SuppressFinalize(this);
+    }
+
+    {{#operation}}
+    /// <summary>
+    /// {{notes}}
+    /// </summary>
+    public async System.Threading.Tasks.Task{{#responses}}{{#-first}}{{#dataType}}<{{dataType}}>{{/dataType}}{{/-first}}{{/responses}} {{operationIdCamelCase}}(
+        {{#allParams}}
+        {{dataType}}{{^required}}?{{/required}} {{paramName}},
+        {{/allParams}}
+        System.Threading.CancellationToken cancellationToken = default
+    )
+    {
+        using var request = {{operationIdCamelCase}}_CreateRequest(
+            {{#allParams}}
+            {{paramName}}{{^-last}},{{/-last}}
+            {{/allParams}}
+        );
+
+        using var response = await _httpClient.SendAsync(request, cancellationToken);
+
+        {{#responses}}
+        {{#-first}}
+        if ((int)response.StatusCode != {{code}})
+        {
+            throw new System.InvalidOperationException("Expected status code {{code}}, but the server responded with " + response.StatusCode.ToString() + ".");
+        }
+
+        {{#dataType}}
+        var content = await System.Net.Http.Json.HttpContentJsonExtensions.ReadFromJsonAsync<{{dataType}}?>(
+            response.Content,
+            _jsonSerializerOptions,
+            cancellationToken);
+        return content ?? throw new System.InvalidOperationException("Code is {{code}}, but result is null.");
+        {{/dataType}}
+        {{/-first}}
+        {{/responses}}
+    }
+
+    {{/operation}}
+    {{#operation}}
+
+{{>clientCreateRequestMethod}}
+    {{/operation}}
+
+    ~{{classname}}Client()
+    {
+        Dispose();
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
+    partial void ValueToString<T>(T value, ref string? result) where T : notnull;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static")]
+    partial void EnumToString<T>(T value, ref string? result) where T : struct, System.Enum;
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _httpClient.Dispose();
+        }
+    }
+
+    private string ValueToString<T>(T value) where T : notnull
+    {
+        string? result = null;
+        ValueToString(value, ref result);
+
+        if (result != null)
+        {
+            return result;
+        }
+
+        return value.ToString()
+            ?? throw new System.InvalidOperationException("UrlEncode returned null.");
+    }
+
+    private string EnumToString<T>(T value) where T : struct, System.Enum
+    {
+        string? result = null;
+        EnumToString(value, ref result);
+        return result ?? ValueToString(value);
+    }
+
+    private static string UrlEncode(string value)
+    {
+        return System.Web.HttpUtility.UrlEncode(value.ToString())
+            ?? throw new System.InvalidOperationException("UrlEncode returned null.");
+    }
+}

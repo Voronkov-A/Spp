@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <Description>Spp.Common.Errors.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\..\contracts\webapi.v1\common.errors.yaml">
+      <Link>V1\%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Spp.Common.Configuration" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Miscellaneous" Version="0.0.1" />
+  </ItemGroup>
+</Project>

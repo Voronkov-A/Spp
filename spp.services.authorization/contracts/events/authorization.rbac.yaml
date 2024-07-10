@@ -1,0 +1,110 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization RBAC events
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+
+    PermissionGroupCreated:
+      description: Permission group created.
+      type: object
+      required:
+        - permissionIds
+      properties:
+        permissionIds:
+          description: Permission ids.
+          type: array
+          items:
+            type: string
+
+    PermissionGroupUpdated:
+      description: Permission group updated.
+      type: object
+      required:
+        - addedPermissionIds
+        - removedPermissionIds
+      properties:
+        addedPermissionIds:
+          description: Added permission ids.
+          type: array
+          items:
+            type: string
+        removedPermissionIds:
+          description: Removed permission ids.
+          type: array
+          items:
+            type: string
+
+    RoleCreated:
+      description: Role created.
+      type: object
+      required:
+        - name
+        - isDefault
+        - permissions
+      properties:
+        name:
+          description: Role name.
+          allOf:
+            - $ref: '#/components/schemas/LocalizedName'
+        isDefault:
+          description: If true, the role will be assigned to all newly registered users.
+          type: boolean
+        permissions:
+          description: Role permissions.
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionReference'
+
+    RoleDeleted:
+      allOf:
+        - description: Role deleted.
+          type: object
+
+    LocalizedName:
+      description: Localized name.
+      type: object
+      required:
+        - default
+        - translations
+      properties:
+        default:
+          description: Default name.
+          type: string
+        translations:
+          description: Translations.
+          type: array
+          items:
+            $ref: '#/components/schemas/Translation'
+
+    Translation:
+      description: Translation.
+      type: object
+      required:
+        - language
+        - value
+      properties:
+        language:
+          description: Language.
+          type: string
+        value:
+          description: Value.
+          type: string
+
+    PermissionReference:
+      description: Permission reference.
+      type: object
+      required:
+        - permissionGroupId
+        - permissionId
+      properties:
+        permissionGroupId:
+          description: Permission group identifier.
+          type: string
+        permissionId:
+          description: Permission identifier.
+          type: string

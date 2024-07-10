@@ -1,0 +1,251 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization RBAC API
+  version: 1.0.0
+
+paths:
+  /v1/rbac/permission-groups/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Permission group identifier.
+        schema:
+          type: string
+    put:
+      description: Create or update permission group.
+      operationId: CreateOrUpdatePermissionGroup
+      tags:
+        - Rbac
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Create or update permission group request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdatePermissionGroupRequest'
+      responses:
+        '204':
+          description: Permission group created or updated.
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /v1/rbac/roles:
+    post:
+      description: Create role.
+      operationId: CreateRole
+      tags:
+        - Rbac
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Create role.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+      responses:
+        '201':
+          description: Role created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRoleResponse'
+          headers:
+            Location:
+              description: Created resource location.
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /v1/rbac/roles/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Role identifier.
+        schema:
+          type: string
+    delete:
+      description: Delete role.
+      operationId: DeleteRole
+      tags:
+        - Rbac
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Role deleted.
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+
+    BadRequestErrorResponse:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    UnauthorizedErrorResponse:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    ForbiddenErrorResponse:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    NotFoundErrorResponse:
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    CreateOrUpdatePermissionGroupRequest:
+      description: Create or update permission group request.
+      type: object
+      required:
+        - permissions
+      properties:
+        permissions:
+          description: Permissions.
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+
+    Permission:
+      description: Permission.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: Identifier.
+          type: string
+
+    CreateRoleRequest:
+      description: Create role request.
+      type: object
+      required:
+        - name
+        - isDefault
+        - permissions
+      properties:
+        name:
+          description: Role name.
+          allOf:
+            - $ref: '#/components/schemas/LocalizedName'
+        isDefault:
+          description: If true, the role will be assigned to all newly registered users.
+          type: boolean
+        permissions:
+          description: Role permission references.
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionReference'
+
+    LocalizedName:
+      description: Localized name.
+      type: object
+      required:
+        - default
+        - translations
+      properties:
+        default:
+          description: Default name.
+          type: string
+        translations:
+          description: Translations.
+          type: array
+          items:
+            $ref: '#/components/schemas/Translation'
+
+    Translation:
+      description: Translation.
+      type: object
+      required:
+        - language
+        - value
+      properties:
+        language:
+          description: Language.
+          type: string
+        value:
+          description: Value.
+          type: string
+
+    PermissionReference:
+      description: Permission reference.
+      type: object
+      required:
+        - permissionGroupId
+        - permissionId
+      properties:
+        permissionGroupId:
+          description: Permission group identifier.
+          type: string
+        permissionId:
+          description: Permission identifier.
+          type: string
+
+    CreateRoleResponse:
+      description: Create role response.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: Role identifier.
+          type: string
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

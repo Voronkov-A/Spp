@@ -1,0 +1,4 @@
+com.spp.openapigenerators.SimpleCsharpClientCodegen
+com.spp.openapigenerators.SimpleCsharpConstantsCodegen
+com.spp.openapigenerators.SimpleCsharpServerCodegen
+com.spp.openapigenerators.SimpleCsharpTestClientCodegen

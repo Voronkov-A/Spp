@@ -1,0 +1,143 @@
+public partial interface I{{classname}}TestClient : System.IDisposable
+{
+    private const int Default = -1;
+
+    {{#operation}}
+    /// <summary>
+    /// {{notes}}
+    /// </summary>
+    System.Threading.Tasks.Task<{{operationIdCamelCase}}ClientResponse> {{operationIdCamelCase}}(
+        {{#allParams}}
+        {{dataType}}{{^required}}?{{/required}} {{paramName}},
+        {{/allParams}}
+        System.Threading.CancellationToken cancellationToken = default
+    );
+
+    {{/operation}}
+    {{#operation}}
+    public class {{operationIdCamelCase}}ClientResponse
+    {
+        {{#responses}}
+        {{#dataType}}
+        private readonly {{dataType}}? _content{{code}};
+        {{/dataType}}
+        {{/responses}}
+        {{^defaultReturnType}}
+        private readonly byte[]? _contentDefault;
+        {{/defaultReturnType}}
+
+        private {{operationIdCamelCase}}ClientResponse(
+            System.Net.HttpStatusCode statusCode,
+            System.Net.Http.Headers.HttpResponseHeaders headers,
+            {{#responses}}
+            {{#dataType}}
+            {{dataType}}? content{{code}} = null{{^-last}},{{/-last}}{{#-last}}{{^defaultReturnType}},{{/defaultReturnType}}{{/-last}}
+            {{/dataType}}
+            {{/responses}}
+            {{^defaultReturnType}}
+            byte[]? contentDefault = null
+            {{/defaultReturnType}}
+        )
+        {
+            StatusCode = statusCode;
+            Headers = headers;
+            {{#responses}}
+            {{#dataType}}
+            _content{{code}} = content{{code}};
+            {{/dataType}}
+            {{/responses}}
+            {{^defaultReturnType}}
+            _contentDefault = contentDefault;
+            {{/defaultReturnType}}
+        }
+
+        public System.Net.HttpStatusCode StatusCode { get; }
+
+        public System.Net.Http.Headers.HttpResponseHeaders Headers { get; }
+
+        {{#responses}}
+        {{#dataType}}
+        public {{dataType}} Content{{code}}
+        {
+            get
+            {
+                if ((int)StatusCode != {{code}} && {{code}} != -1)
+#pragma warning disable CS0162 // Code is unreachable
+                {
+                    throw new System.InvalidOperationException("Status code is " + StatusCode.ToString() + ", not {{code}}.");
+                }
+#pragma warning restore CS0162 // Code is unreachable
+
+                return _content{{code}} ?? throw new System.InvalidOperationException("Status code is {{code}}, but result is null.");
+            }
+        }
+        {{/dataType}}
+        {{#hasHeaders}}
+
+        public HeaderCollection{{code}} Headers{{code}} => new HeaderCollection{{code}}(Headers);
+        {{/hasHeaders}}
+
+        {{/responses}}
+        {{^defaultReturnType}}
+        public byte[] ContentDefault => _contentDefault ?? throw new System.InvalidOperationException("Status code is " + StatusCode.ToString() + ", not Default.");
+        {{/defaultReturnType}}
+
+        public void EnsureStatusCode(System.Net.HttpStatusCode code)
+        {
+            if (StatusCode != code)
+            {
+                throw new System.InvalidOperationException("Status code is " + StatusCode.ToString() + $", not {code}.");
+            }
+        }
+
+        {{#responses}}
+        public static {{operationIdCamelCase}}ClientResponse Create{{code}}(System.Net.HttpStatusCode code, System.Net.Http.Headers.HttpResponseHeaders headers{{#dataType}}, {{dataType}} content{{/dataType}})
+        {
+            if ((int)code != {{code}} && {{code}} != -1)
+#pragma warning disable CS0162 // Code is unreachable
+            {
+                throw new System.InvalidOperationException("Status code {{code}} is expected.");
+            }
+#pragma warning restore CS0162 // Code is unreachable
+
+            return new {{operationIdCamelCase}}ClientResponse(statusCode: code, headers: headers{{#dataType}}, content{{code}}: content{{/dataType}});
+        }
+
+        {{/responses}}
+        {{^defaultReturnType}}
+        public static {{operationIdCamelCase}}ClientResponse CreateDefault(
+            System.Net.HttpStatusCode code,
+            System.Net.Http.Headers.HttpResponseHeaders headers,
+            byte[] content)
+        {
+            {{#responses}}
+            if ((int)code == {{code}})
+            {
+                throw new System.InvalidOperationException("Status code " + code.ToString() + " is specified.");
+            }
+            {{/responses}}
+
+            return new {{operationIdCamelCase}}ClientResponse(statusCode: code, headers: headers, contentDefault: content);
+        }
+        {{/defaultReturnType}}
+        {{#responses}}
+        {{#hasHeaders}}
+        public readonly struct HeaderCollection{{code}}
+        {
+            private readonly System.Net.Http.Headers.HttpResponseHeaders _headers;
+
+            public HeaderCollection{{code}}(System.Net.Http.Headers.HttpResponseHeaders headers)
+            {
+                _headers = headers;
+            }
+            {{#responseHeaders}}
+
+            public {{dataType}}{{^required}}?{{/required}} {{paramName}} =>
+                System.Linq.Enumerable.Single{{^required}}OrDefault{{/required}}(_headers.GetValues("{{baseName}}"));
+            {{/responseHeaders}}
+        }
+        {{/hasHeaders}}
+        {{/responses}}
+    }
+    {{/operation}}
+}

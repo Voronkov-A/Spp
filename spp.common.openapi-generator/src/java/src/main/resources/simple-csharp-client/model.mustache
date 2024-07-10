@@ -1,0 +1,13 @@
+#nullable enable
+
+{{#models}}
+{{#model}}
+namespace {{modelNamespace}};
+
+{{#isEnum}}{{>enum}}{{/isEnum}}
+{{^isEnum}}{{>class}}{{/isEnum}}
+
+{{/model}}
+{{/models}}
+
+#nullable restore

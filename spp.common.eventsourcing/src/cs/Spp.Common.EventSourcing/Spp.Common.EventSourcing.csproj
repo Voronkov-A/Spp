@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <Description>Spp.Common.EventSourcing.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Spp.Common.Domain" Version="0.0.1" />
+        <PackageReference Include="Spp.Common.Transactions" Version="0.0.1" />
+    </ItemGroup>
+</Project>

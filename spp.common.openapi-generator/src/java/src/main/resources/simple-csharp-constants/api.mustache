@@ -1,0 +1,10 @@
+namespace {{apiNamespace}};
+
+{{#operations}}
+internal static class {{classname}}Paths
+{
+    {{#operation}}
+    public const string {{operationIdCamelCase}} = "{{path}}";
+    {{/operation}}
+}
+{{/operations}}

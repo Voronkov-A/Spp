@@ -1,0 +1,48 @@
+---
+openapi: 3.1.0
+info:
+  title: Authorization Common API
+  version: 1.0.0
+
+paths: {}
+
+components:
+  schemas:
+
+    AuthorizationPermissionIds:
+      description: Authorization permission ids.
+      type: string
+      enum:
+        - manageRoles
+        - manageUserRoles
+
+    AuthorizationErrorCode:
+      description: Authorization error code.
+      type: string
+      enum:
+        - authorization.invalidName
+        - authorization.permissionNotFound
+
+    InvalidNameErrorParameters:
+      description: Parameters for authorization.invalidName error code.
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Name.
+          type: string
+
+    PermissionNotFoundErrorParameters:
+      description: Parameters for iauthorization.permissionNotFound error code.
+      type: object
+      required:
+        - permissionGroupId
+        - permissionId
+      properties:
+        permissionGroupId:
+          description: Permission group identifier.
+          type: string
+        permissionId:
+          description: Permission identifier.
+          type: string

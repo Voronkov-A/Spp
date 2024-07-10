@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <Description>Spp.Common.Authentication.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Spp.Common.Authentication.Http/Spp.Common.Authentication.Http.csproj" />
+    <ProjectReference Include="../Spp.Common.Authentication.Oidc/Spp.Common.Authentication.Oidc.csproj" />
+  </ItemGroup>
+</Project>

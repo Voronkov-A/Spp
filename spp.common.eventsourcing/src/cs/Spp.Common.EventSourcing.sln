@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.EventSourcing", "Spp.Common.EventSourcing\Spp.Common.EventSourcing.csproj", "{8EA148B9-BFE8-48BA-B8F6-0FE62FE6F27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.EventSourcing.EventStore", "Spp.Common.EventSourcing.EventStore\Spp.Common.EventSourcing.EventStore.csproj", "{525A3D35-FF48-4E31-AA0C-B79627495E21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spp.Common.EventSourcing.EventStore.Postgres", "Spp.Common.EventSourcing.EventStore.Postgres\Spp.Common.EventSourcing.EventStore.Postgres.csproj", "{45FFF64A-B4AD-49E8-8A01-591F1068FEFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8EA148B9-BFE8-48BA-B8F6-0FE62FE6F27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA148B9-BFE8-48BA-B8F6-0FE62FE6F27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA148B9-BFE8-48BA-B8F6-0FE62FE6F27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA148B9-BFE8-48BA-B8F6-0FE62FE6F27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525A3D35-FF48-4E31-AA0C-B79627495E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525A3D35-FF48-4E31-AA0C-B79627495E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525A3D35-FF48-4E31-AA0C-B79627495E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525A3D35-FF48-4E31-AA0C-B79627495E21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45FFF64A-B4AD-49E8-8A01-591F1068FEFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45FFF64A-B4AD-49E8-8A01-591F1068FEFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45FFF64A-B4AD-49E8-8A01-591F1068FEFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45FFF64A-B4AD-49E8-8A01-591F1068FEFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

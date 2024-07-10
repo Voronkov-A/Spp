@@ -1,0 +1,5 @@
+@base=https://localhost:34008
+
+### HealthCheck
+
+GET {{base}}/v1/service/health

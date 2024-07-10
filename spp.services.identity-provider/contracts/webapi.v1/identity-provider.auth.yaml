@@ -1,0 +1,142 @@
+---
+openapi: 3.1.0
+info:
+  title: IdentityProvider Auth API
+  version: 1.0.0
+
+paths:
+
+  /v1/auth/sign-in:
+    post:
+      description: Sign in.
+      operationId: SignIn
+      tags:
+        - Auth
+      requestBody:
+        description: Sign in request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '204':
+          description: Successfully signed in.
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+  /v1/auth/callback:
+    get:
+      description: Authorization callback for debug purposes.
+      operationId: Callback
+      tags:
+        - Auth
+      parameters:
+        - name: code
+          in: query
+          required: true
+          description: Code.
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: true
+          description: Scope.
+          schema:
+            type: string
+        - name: session_state
+          in: query
+          required: true
+          description: Session state.
+          schema:
+            type: string
+        - name: iss
+          in: query
+          required: true
+          description: Issuer.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Callback parameters information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationCallbackParameters'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        default:
+          $ref: '#/components/responses/DefaultErrorResponse'
+
+components:
+  responses:
+
+    BadRequestErrorResponse:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    UnauthorizedErrorResponse:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+    DefaultErrorResponse:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+
+  schemas:
+
+    SignInRequest:
+      description: Sign in request.
+      type: object
+      required:
+        - username
+        - password
+        - scopes
+      properties:
+        username:
+          description: Username.
+          type: string
+        password:
+          description: Password.
+          type: string
+        scopes:
+          description: Scopes.
+          type: string
+
+    AuthorizationCallbackParameters:
+      description: Authorization callback parameters.
+      type: object
+      required:
+        - code
+        - scope
+        - session_state
+        - iss
+      properties:
+        code:
+          description: Code.
+          type: string
+        scope:
+          description: Scope.
+          type: string
+        session_state:
+          description: Session state.
+          type: string
+        iss:
+          description: Issuer.
+          type: string
+
+    ProblemDetails:
+      $ref: './common.errors.yaml#/components/schemas/ProblemDetails'

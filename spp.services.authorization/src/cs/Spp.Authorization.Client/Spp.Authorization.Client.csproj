@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <Description>Spp.Authorization.Client.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Spp.Common.Authentication.Http" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Authentication.Oidc" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Authorization" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Configuration" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Cqs" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Domain" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Exceptions" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Initialization" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Migrations.Postgres" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Miscellaneous" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Miscellaneous.DependencyInjection" Version="0.0.1" />
+    <PackageReference Include="Spp.Common.Subscriptions.InMemory" Version="0.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Spp.Authorization.Events/Spp.Authorization.Events.csproj" />
+  </ItemGroup>
+</Project>
