@@ -1,14 +1,14 @@
 using Spp.Common.Miscellaneous;
+using Spp.Common.Miscellaneous.Serialization;
 using System;
 using System.Net.Http;
-using System.Text.Json;
 
 namespace Spp.Authorization.TestClient.Callback.V1;
 
 public partial class CallbackTestClient
 {
     public CallbackTestClient(HttpClient httpClient)
-        : this(httpClient, new JsonSerializerOptions(JsonSerializerDefaults.Web))
+        : this(httpClient, DefaultJsonSerializer.Options)
     {
     }
 

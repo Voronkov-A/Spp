@@ -8,89 +8,57 @@ networks:
 services:
   
   spp_yugabyte_master_1:
-    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte/master:${SPP_SERVICES_YUGABYTE_VERSION:-0.0.1}
+    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte-master:${SPP_SERVICES_YUGABYTEMASTER_VERSION:-0.0.1}
     container_name: spp_yugabyte_master_1
     environment:
       SERVICE_7000_NAME: spp_yugabyte_master_1
-    command:
-      - '/home/yugabyte/bin/yb-master'
-      - '--fs_data_dirs=/mnt/master'
-      - '--master-addresses=spp_yugabyte_master_1:7100,spp_yugabyte_master_2:7100'
-      - '--rpc_bind_addresses=spp_yugabyte_master_1:7100'
-      - '--replication_factor=1'
+      MASTER_ADDRESSES: spp_yugabyte_master_1:7100
+      RPC_BIND_ADDRESSES: spp_yugabyte_master_1:7100
+      REPLICATION_FACTOR: 1
     volumes:
-      - ./.docker/spp_yugabyte_master_1/data:/mnt/master
+      - ./.docker/spp_yugabyte_master_1/data:/${SPP_PLATFORM_WINDOWS:-}mnt/master
     networks:
       - spp_network
     ports:
-      - '34000:7000'
-      - '34001:7100'
-  
-  spp_yugabyte_master_2:
-    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte/master:${SPP_SERVICES_YUGABYTE_VERSION:-0.0.1}
-    container_name: spp_yugabyte_master_2
-    environment:
-      SERVICE_7000_NAME: spp_yugabyte_master_2
-    command:
-      - '/home/yugabyte/bin/yb-master'
-      - '--fs_data_dirs=/mnt/master'
-      - '--master-addresses=spp_yugabyte_master_1:7100,spp_yugabyte_master_2:7100'
-      - '--rpc_bind_addresses=spp_yugabyte_master_2:7100'
-      - '--replication_factor=1'
-    volumes:
-      - ./.docker/spp_yugabyte_master_2/data:/mnt/master
-    networks:
-      - spp_network
-    ports:
-      - '34002:7000'
-      - '34003:7100'
+      - '32000:7000'
+      - '32001:7100'
   
   spp_yugabyte_tserver_1:
-    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte/tserver:${SPP_SERVICES_YUGABYTE_VERSION:-0.0.1}
+    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte-tserver:${SPP_SERVICES_YUGABYTETSERVER_VERSION:-0.0.1}
     container_name: spp_yugabyte_tserver_1
     environment:
       SERVICE_5433_NAME: ysql
       SERVICE_9042_NAME: ycql
       SERVICE_6379_NAME: yedis
       SERVICE_9000_NAME: spp_yugabyte_tserver_1
-    command:
-      - '/home/yugabyte/bin/yb-tserver'
-      - '--fs_data_dirs=/mnt/tserver'
-      - '--start_pgsql_proxy'
-      - '--rpc_bind_addresses=spp_yugabyte_tserver_1:9100'
-      - '--tserver_master_addrs=spp_yugabyte_master_1:7100,spp_yugabyte_master_2:7100'
-      - '--ysql_enable_auth'
+      RPC_BIND_ADDRESSES: spp_yugabyte_tserver_1:9100
+      TSERVER_MASTER_ADDRS: spp_yugabyte_master_1:7100
     volumes:
-      - ./.docker/spp_yugabyte_tserver_1/data:/mnt/tserver
+      - ./.docker/spp_yugabyte_tserver_1/data:/${SPP_PLATFORM_WINDOWS:-}mnt/tserver
     networks:
       - spp_network
     ports:
-      - '34004:5433'
-      - '34005:9100'
-    #depends_on:
-    #  - spp_yugabyte_master_1
+      - '32002:5433'
+      - '32003:9000'
+      - '32004:9100'
 
-  spp_yugabyte_tserver_2:
-    image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/yugabyte/tserver:${SPP_SERVICES_YUGABYTE_VERSION:-0.0.1}
-    container_name: spp_yugabyte_tserver_2
-    environment:
-      SERVICE_5433_NAME: ysql
-      SERVICE_9042_NAME: ycql
-      SERVICE_6379_NAME: yedis
-      SERVICE_9000_NAME: spp_yugabyte_tserver_2
-    command:
-      - '/home/yugabyte/bin/yb-tserver'
-      - '--fs_data_dirs=/mnt/tserver'
-      - '--start_pgsql_proxy'
-      - '--rpc_bind_addresses=spp_yugabyte_tserver_2:9100'
-      - '--tserver_master_addrs=spp_yugabyte_master_1:7100,spp_yugabyte_master_2:7100'
-      - '--ysql_enable_auth'
-    volumes:
-      - ./.docker/spp_yugabyte_tserver_2/data:/mnt/tserver
-    networks:
-      - spp_network
-    ports:
-      - '34006:5433'
-      - '34007:9100'
-    #depends_on:
-    #  - spp_yugabyte_master_1
+  #spp_identity_provider_1:
+  #  image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/identity-provider:${SPP_SERVICES_IDENTITYPROVIDER_VERSION:-0.0.1}
+  #  container_name: spp_identity_provider_1
+  #  environment:
+  #    Persistence__Connection__Hostname: spp_yugabyte_tserver_1:5433
+  #  networks:
+  #    - spp_network
+  #  ports:
+  #    - '32004:32004'
+
+  #spp_authorization_1:
+  #  image: ${SPP_DOCKER_REGISTRY_ADDRESS:-localhost:51443}/spp/authorization:${SPP_SERVICES_AUTHORIZATION_VERSION:-0.0.1}
+  #  container_name: spp_authorization_1
+  #  environment:
+  #    Persistence__Connection__Hostname: spp_yugabyte_tserver_1:5433
+  #    IdentityProvider__Url: https://spp_identity_provider_1:32004
+  #  networks:
+  #    - spp_network
+  #  ports:
+  #    - '32005:32005'

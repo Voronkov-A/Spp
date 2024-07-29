@@ -55,7 +55,7 @@ public partial class UsersClient : IUsersClient, System.IDisposable
         CreateUserRequest createUserRequest
     )
     {
-        var path = "/v1/users";
+        var path = "/identity-provider/v1/users";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);

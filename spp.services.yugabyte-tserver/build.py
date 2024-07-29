@@ -17,7 +17,7 @@ def main():
     
     subprocess.run([
         'docker', 'build', 'src',
-        '-t', f'{registry}/spp/yugabyte/master:{version}'
+        '-t', f'{registry}/spp/yugabyte-tserver:{version}'
     ]).check_returncode()
 
 if __name__ == "__main__":

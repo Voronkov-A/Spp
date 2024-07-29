@@ -1,6 +1,6 @@
+using Spp.Common.Miscellaneous.Serialization;
 using System;
 using System.Net.Http;
-using System.Text.Json;
 
 namespace Spp.Authorization.TestClient.Service.V1;
 
@@ -12,7 +12,7 @@ public partial class ServiceTestClient
             {
                 BaseAddress = baseAddress
             },
-            new JsonSerializerOptions(JsonSerializerDefaults.Web))
+            DefaultJsonSerializer.Options)
     {
     }
 }

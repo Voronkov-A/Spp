@@ -1,0 +1,68 @@
+gateway:
+  config:
+    tls:
+      crt: {{ .StateValues.identityProvider.gateway.config.tls.crt | quote }}
+      key: {{ .StateValues.identityProvider.gateway.config.tls.key | quote }}
+    ca:
+      crt: {{ .StateValues.identityProvider.gateway.config.ca.crt | quote }}
+    externalHost: {{ .StateValues.identityProvider.common.config.externalHost | quote }}
+
+identity-provider:
+  imagePullSecret:
+    dockerconfigjson: {{ .StateValues.identityProvider.common.imagePullSecret.dockerconfigjson | quote }}
+  imagePullPolicy: Always
+  replicas: {{ .StateValues.identityProvider.identityProvider.replicas }}
+  debug: {{ .StateValues.identityProvider.common.debug }}
+  image:
+    registry: {{ .StateValues.identityProvider.common.dockerRegistry | quote }}
+    path: spp/identity-provider
+    tag: {{ .StateValues.identityProvider.identityProvider.tag | quote }}
+  config:
+    logLevel: {{ .StateValues.identityProvider.common.config.logLevel | quote }}
+    externalUrl: https://{{ .StateValues.identityProvider.common.config.externalHost }}
+    authentication:
+      clientId: {{ .StateValues.identityProvider.common.config.authentication.clientId | quote }}
+      clientSecret:
+        value: {{ .StateValues.identityProvider.common.config.authentication.clientSecret.value | quote }}
+    superuser:
+      username: {{ .StateValues.identityProvider.identityProvider.config.superuser.username | quote }}
+      password:
+        value: {{ .StateValues.identityProvider.identityProvider.config.superuser.password.value | quote }}
+    errors:
+      externalUrl: https://{{ .StateValues.identityProvider.common.config.externalHost }}
+    persistence:
+      username: {{ .StateValues.identityProvider.common.config.persistence.username | quote }}
+      password:
+        value: {{ .StateValues.identityProvider.common.config.persistence.password.value | quote }}
+
+yugabyte-master:
+  imagePullSecret:
+    dockerconfigjson: {{ .StateValues.identityProvider.common.imagePullSecret.dockerconfigjson | quote }}
+  imagePullPolicy: Always
+  replicas: {{ .StateValues.identityProvider.yugabyteMaster.replicas }}
+  debug: {{ .StateValues.identityProvider.common.debug }}
+  image:
+    registry: {{ .StateValues.identityProvider.common.dockerRegistry | quote }}
+    path: spp/yugabyte-master
+    tag: {{ .StateValues.identityProvider.yugabyteMaster.tag | quote }}
+  config:
+    replicationFactor: {{ .StateValues.identityProvider.yugabyteMaster.config.replicationFactor }}
+  storage:
+    className: {{ .StateValues.identityProvider.yugabyteMaster.storage.className | quote }}
+    size: {{ .StateValues.identityProvider.yugabyteMaster.storage.size | quote }}
+
+yugabyte-tserver:
+  imagePullSecret:
+    dockerconfigjson: {{ .StateValues.identityProvider.common.imagePullSecret.dockerconfigjson | quote }}
+  imagePullPolicy: Always
+  replicas: {{ .StateValues.identityProvider.yugabyteTserver.replicas }}
+  debug: {{ .StateValues.identityProvider.common.debug }}
+  image:
+    registry: {{ .StateValues.identityProvider.common.dockerRegistry | quote }}
+    path: spp/yugabyte-tserver
+    tag: {{ .StateValues.identityProvider.yugabyteTserver.tag | quote }}
+  storage:
+    className: {{ .StateValues.identityProvider.yugabyteTserver.storage.className | quote }}
+    size: {{ .StateValues.identityProvider.yugabyteTserver.storage.size | quote }}
+  yugabyteMaster:
+    replicas: {{ .StateValues.identityProvider.yugabyteMaster.replicas }}

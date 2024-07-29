@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using System.Linq;
 
 namespace Spp.Common.Initialization;
 
@@ -7,18 +7,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInitializer<T>(this IServiceCollection services) where T : class, IInitializer
     {
-        return services
-            .AddScoped<T>()
-            .AddHostedService<InitializationHostedService<T>>();
-    }
+        if (!services.Any(x => x.ImplementationType == typeof(InitializationHostedService)))
+        {
+            services.AddHostedService<InitializationHostedService>();
+        }
 
-    public static IServiceCollection AddInitializer<T>(
-        this IServiceCollection services,
-        Func<IServiceProvider, T> factory)
-        where T : class, IInitializer
-    {
-        return services
-            .AddScoped(factory)
-            .AddHostedService<InitializationHostedService<T>>();
+        return services.AddScoped<IInitializer, T>();
     }
 }

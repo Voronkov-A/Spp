@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-provider
+  labels:
+    app.kubernetes.io/name: identity-provider
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+data: 
+  Logging__LogLevel__Default: {{ .Values.config.logLevel }}
+  Authentication__Audience: {{ .Values.config.externalUrl }}
+  Authentication__Issuers__0: {{ .Values.config.externalUrl }}
+  Application__DefaultApplication__ClientId: {{ .Values.config.authentication.clientId }}
+  Application__DefaultApplication__RedirectUris__0: {{ .Values.config.externalUrl }}/identity-provider/v1/auth/callback
+  Application__DefaultUserSet__Users__0__Username: {{ .Values.config.superuser.username }}
+  Errors__Url: {{ .Values.config.errors.externalUrl }}
+  Persistence__Connection__Username: {{ .Values.config.persistence.username }}

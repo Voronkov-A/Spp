@@ -1,0 +1,15 @@
+config:
+  tls:
+    crt: ref+file://certificates/identity-provider/minikube.crt
+    key: ref+file://certificates/identity-provider/minikube.key
+  ca:
+    crt: ref+file://certificates/identity-provider/spp-ca.crt
+  externalHost: identity-provider.minikube
+internalCertificateIssuer:
+  issuer:
+    name: internal-certificate-issuer
+    kind: Issuer
+identityProvider:
+  service:
+    name: identity-provider
+    webApiPort: 32005

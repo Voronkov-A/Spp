@@ -1,0 +1,27 @@
+{{ if .Values.debug }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity-provider-debug
+  labels:
+    app.kubernetes.io/name: identity-provider
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: debug
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: identity-provider
+  ports:
+    - name: web-api
+      protocol: TCP
+      port: 32005
+      targetPort: 32005
+      nodePort: 32005
+{{ end }}

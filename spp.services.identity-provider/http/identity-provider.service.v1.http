@@ -1,5 +1,5 @@
-@base=https://localhost:34008
+@base=https://localhost:32005
 
 ### HealthCheck
 
-GET {{base}}/v1/service/health
+GET {{base}}/identity-provider/v1/service/health

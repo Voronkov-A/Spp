@@ -1,0 +1,41 @@
+repositories:
+  {{ if .StateValues.certManager.installationRequired }}
+  - name: jetstack
+    url: https://charts.jetstack.io
+  {{ end }}
+  {{ if .StateValues.reloader.installationRequired }}
+  - name: stakater
+    url: https://stakater.github.io/stakater-charts
+  {{ end }}
+
+releases:
+  {{ if .StateValues.certManager.installationRequired }}
+  - name: spp-cert-manager
+    namespace: {{ .StateValues.certManager.namespace | quote }}
+    chart: jetstack/cert-manager
+    version: v1.11.0
+    hooks:
+      - events: ["prepare"]
+        showlogs: true
+        command: "kubectl"
+        args: ["apply", "-f", "https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.crds.yaml"]
+  {{ end }}
+  {{ if .StateValues.reloader.installationRequired }}
+  - name: spp-reloader
+    namespace: {{ .StateValues.reloader.namespace | quote }}
+    chart: stakater/reloader
+    version: v1.0.18
+  {{ end }}
+  - name: spp-identity-provider
+    namespace: {{ .StateValues.identityProvider.namespace | quote }}
+    chart: ./charts/identity-provider
+    version: 0.1.0
+    values:
+      - ./values/identity-provider.yaml.gotmpl
+    needs:
+      {{ if .StateValues.certManager.installationRequired }}
+      - {{ .StateValues.certManager.namespace }}/spp-cert-manager
+      {{ end }}
+      {{ if .StateValues.reloader.installationRequired }}
+      - {{ .StateValues.reloader.namespace }}/spp-reloader
+      {{ end }}

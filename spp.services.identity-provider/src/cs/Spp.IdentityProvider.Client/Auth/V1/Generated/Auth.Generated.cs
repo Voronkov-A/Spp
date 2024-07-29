@@ -30,7 +30,6 @@ public partial class AuthClient : IAuthClient, System.IDisposable
     public async System.Threading.Tasks.Task<AuthorizationCallbackParameters> Callback(
         string code,
         string scope,
-        string sessionState,
         string iss,
         System.Threading.CancellationToken cancellationToken = default
     )
@@ -38,7 +37,6 @@ public partial class AuthClient : IAuthClient, System.IDisposable
         using var request = Callback_CreateRequest(
             code,
             scope,
-            sessionState,
             iss
         );
 
@@ -81,11 +79,10 @@ public partial class AuthClient : IAuthClient, System.IDisposable
     private System.Net.Http.HttpRequestMessage Callback_CreateRequest(
         string code,
         string scope,
-        string sessionState,
         string iss
     )
     {
-        var path = "/v1/auth/callback";
+        var path = "/identity-provider/v1/auth/callback";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);
@@ -106,14 +103,6 @@ public partial class AuthClient : IAuthClient, System.IDisposable
                 .Append(separator)
                 .Append("scope=")
                 .Append(UrlEncode(ValueToString(scope)));
-            separator = '&';
-        }
-        if (true)
-        {
-            uriBuilder
-                .Append(separator)
-                .Append("session_state=")
-                .Append(UrlEncode(ValueToString(sessionState)));
             separator = '&';
         }
         if (true)
@@ -146,7 +135,7 @@ public partial class AuthClient : IAuthClient, System.IDisposable
         SignInRequest signInRequest
     )
     {
-        var path = "/v1/auth/sign-in";
+        var path = "/identity-provider/v1/auth/sign-in";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);
@@ -228,7 +217,6 @@ public partial interface IAuthClient
     System.Threading.Tasks.Task<AuthorizationCallbackParameters> Callback(
         string code,
         string scope,
-        string sessionState,
         string iss,
         System.Threading.CancellationToken cancellationToken = default
     );

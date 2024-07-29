@@ -22,6 +22,6 @@ public static class ApplicationBuilderExtensions
     private static async Task WriteHealthCheckResponse(HttpContext context, HealthReport report)
     {
         context.Response.ContentType = MediaTypeNames.Application.Json;
-        await context.Response.WriteAsJsonAsync(report.Status, context.RequestAborted);
+        await context.Response.WriteAsync($"\"{report.Status.ToString().ToLowerInvariant()}\"", context.RequestAborted);
     }
 }

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+		<CopyDebugSymbolFilesFromPackages>true</CopyDebugSymbolFilesFromPackages>
+		<ContentTargetFolders>content</ContentTargetFolders>
+		<Description>Spp.Common.Synchronization.Postgres.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<Version>0.0.1</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Spp.Common.Configuration" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Initialization" Version="0.0.1" />
+		<PackageReference Include="Spp.Common.Postgres" Version="0.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../Spp.Common.Synchronization/Spp.Common.Synchronization.csproj" />
+	</ItemGroup>
+</Project>

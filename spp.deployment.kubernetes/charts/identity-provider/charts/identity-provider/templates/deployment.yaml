@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-provider
+  labels:
+    app.kubernetes.io/name: identity-provider
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: identity-provider
+  replicas: {{ int64 .Values.replicas }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: identity-provider
+        helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/component: identity-provider
+        app.kubernetes.io/part-of: spp
+    spec:
+      imagePullSecrets:
+        - name: identity-provider-image-pull-secret
+      containers:
+        - name: identity-provider
+          image: {{ .Values.image.registry }}/{{ .Values.image.path }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - containerPort: 16780
+          envFrom:
+            - configMapRef:
+                name: identity-provider
+          env:
+            - name: Kestrel__Certificates__Default__Path
+              value: /app/Certificates/Tls/tls.crt
+            - name: Kestrel__Certificates__Default__KeyPath
+              value: /app/Certificates/Tls/tls.key
+            - name: Authentication__Issuers__1
+              value: https://identity-provider.{{ .Release.Namespace }}.svc.cluster.local:32005
+            - name: Authentication__CrtPath
+              value: /app/Certificates/TokenSignature/tls.crt
+            - name: Authentication__KeyPath
+              value: /app/Certificates/TokenSignature/tls.key
+            - name: Application__DefaultApplication__Secret
+              valueFrom:
+                secretKeyRef:
+                  name: identity-provider-client-secret
+                  key: value
+            - name: Application__DefaultUserSet__Users__0__Password
+              valueFrom:
+                secretKeyRef:
+                  name: identity-provider-superuser-password
+                  key: value
+            - name: Persistence__Connection__Hostname
+              value: {{ .Values.yugabyteTserver.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
+            - name: Persistence__Connection__Port
+              value: {{ .Values.yugabyteTserver.service.sqlPort | quote }}
+            - name: Persistence__Connection__Password
+              valueFrom:
+                secretKeyRef:
+                  name: identity-provider-persistence-password
+                  key: value
+          livenessProbe:
+            exec:
+              command:
+                - docker-healthcheck.sh
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 15
+            failureThreshold: 20
+          volumeMounts:
+            - name: tls
+              mountPath: /usr/local/share/ca-certificates/ca.crt
+              subPath: ca.crt
+              readOnly: true
+            - name: tls
+              mountPath: /app/Certificates/Tls
+              readOnly: true
+            - name: token-signature
+              mountPath: /app/Certificates/TokenSignature
+              readOnly: true
+      volumes:
+        - name: tls
+          secret:
+            secretName: identity-provider-tls
+        - name: token-signature
+          secret:
+            secretName: identity-provider-token-signature

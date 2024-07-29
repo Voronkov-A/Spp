@@ -118,7 +118,7 @@ public partial class UsersTestClient : IUsersTestClient
         CreateUserRequest createUserRequest
     )
     {
-        var path = "/v1/users";
+        var path = "/identity-provider/v1/users";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);

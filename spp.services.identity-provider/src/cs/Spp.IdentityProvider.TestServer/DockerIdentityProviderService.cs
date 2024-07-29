@@ -58,7 +58,7 @@ public sealed class DockerIdentityProviderService : IInfrastructureService<Ident
         var builder = new ContainerBuilder()
             .WithImage("localhost:51443/spp/identity-provider:0.0.1")
             .WithName(nameGenerator.GenerateName())
-            .WithPortBinding(_webApiPort.Number, 34008)
+            .WithPortBinding(_webApiPort.Number, 32005)
             .WithEnvironment("Logging__Console__IncludeScopes", true.ToString())
             .WithEnvironment("Authentication__Issuers__0", webApiUrl.ToString().TrimEnd('/'))
             .WithEnvironment(

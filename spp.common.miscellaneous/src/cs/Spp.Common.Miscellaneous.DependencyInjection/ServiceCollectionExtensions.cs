@@ -53,9 +53,7 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddDecorator(IServiceCollection services, DecorationStrategy strategy)
     {
-        var count = services.Count;
-
-        for (var i = 0; i < count; ++i)
+        for (var i = services.Count - 1; i >= 0; --i)
         {
             var serviceDescriptor = services[i];
 

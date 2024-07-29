@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Spp.Common.Configuration;
 using Spp.Common.Postgres;
 using Spp.Common.Postgres.EntityFramework;
+using Spp.Common.Synchronization.Postgres;
 using Spp.IdentityProvider.Persistence.Authorization;
 
 namespace Spp.IdentityProvider.Persistence;
@@ -14,6 +15,8 @@ public static class ServiceCollectionExtensions
         return services
             .AddSettings<ConnectionSettings>("Persistence:Connection")
             .AddPostgresDbContext<AuthorizationDbContext>(AuthorizationDbContext.SchemaName)
-            .AddTransient<IClientStore, ClientStore>();
+            .AddTransient<IClientStore, ClientStore>()
+            .AddSingleton<IConnectionFactory, PostgresConnectionFactory>()
+            .AddPostgresTableDistributedLocks();
     }
 }

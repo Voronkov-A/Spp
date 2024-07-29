@@ -8,5 +8,7 @@ public class AuthenticationSettings
 
     public required IReadOnlyCollection<string> Issuers { get; init; }
 
+    public required string CrtPath { get; init; }
+
     public required string KeyPath { get; init; }
 }

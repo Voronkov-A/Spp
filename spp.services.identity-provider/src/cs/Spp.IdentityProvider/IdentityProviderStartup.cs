@@ -21,6 +21,7 @@ using Spp.IdentityProvider.WebApi.Auth;
 using Spp.Common.Authentication.TokenAuthenticationScheme.IdentityServer;
 using Spp.Common.Authentication.TokenAuthenticationScheme;
 using Spp.IdentityProvider.Application.Applications.Settings;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Spp.IdentityProvider;
 
@@ -30,7 +31,9 @@ public static class IdentityProviderStartup
     {
         services.AddSettings<AuthenticationSettings>("Authentication");
         var authenticationSettings = configuration.GetSettings<AuthenticationSettings>("Authentication");
-        var cert = new X509Certificate2(authenticationSettings.KeyPath);
+        var signingCertificate = X509Certificate2.CreateFromPemFile(
+            authenticationSettings.CrtPath,
+            authenticationSettings.KeyPath);
 
         var defaultApplicationSettings = configuration.GetSettings<DefaultApplicationSettings>(
             "Application:DefaultApplication");
@@ -56,6 +59,7 @@ public static class IdentityProviderStartup
         services
             .AddIdentityServer(options =>
             {
+                options.PersistentGrants.DataProtectData = false;
                 options.UserInteraction = new UserInteractionOptions
                 {
                     LogoutUrl = "/account/logout",
@@ -63,7 +67,11 @@ public static class IdentityProviderStartup
                     LoginReturnUrlParameter = "returnUrl"
                 };
             })
-            .AddApiAuthorization<User, AuthorizationDbContext>()
+            .AddApiAuthorization<User, AuthorizationDbContext>(options =>
+            {
+                var key = new X509SecurityKey(signingCertificate);
+                options.SigningCredential = new SigningCredentials(key, "RS256");
+            })
             .AddInMemoryApiResources(new[]
             {
                 new ApiResource(authenticationSettings.Audience)
@@ -124,7 +132,7 @@ public static class IdentityProviderStartup
 
         services.AddTransient<IUserClaimsPrincipalFactory<User>, IdentityProviderUserClaimsPrincipalFactory>();
         services.AddWebApi();
-        services.AddSingleton(cert);
+        services.AddSingleton(signingCertificate);
 
         services.AddInitialization();
     }

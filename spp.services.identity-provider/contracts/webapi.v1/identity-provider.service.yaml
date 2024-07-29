@@ -6,7 +6,7 @@ info:
 
 paths:
 
-  /v1/service/health:
+  /identity-provider/v1/service/health:
     get:
       description: Check health.
       operationId: HealthCheck

@@ -26,12 +26,13 @@ def main() -> None:
         'spp.common.localization',
         'spp.common.logging',
         'spp.common.cqs',
+        'spp.common.synchronization',
         'spp.common.hosting',
         'spp.common.test-helpers',
         'spp.common.openapi-generator',
 
-        'spp.services.yugabyte.master',
-        'spp.services.yugabyte.tserver',
+        'spp.services.yugabyte-master',
+        'spp.services.yugabyte-tserver',
         'spp.services.identity-provider',
         'spp.services.authorization'
     ]

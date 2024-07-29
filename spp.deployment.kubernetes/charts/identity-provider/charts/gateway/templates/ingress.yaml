@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gateway
+  labels:
+    app.kubernetes.io/name: gateway
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+  annotations:
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/secure-verify-ca-secret: gateway-internal-tls
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: gateway-external-tls
+      hosts:
+        - {{ .Values.config.externalHost }}
+  rules:
+    - host: {{ .Values.config.externalHost }}
+      http:
+        paths:
+          - path: /identity-provider/
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.identityProvider.service.name }}
+                port:
+                  number: {{ .Values.identityProvider.service.webApiPort }}
+          - path: /connect/
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.identityProvider.service.name }}
+                port:
+                  number: {{ .Values.identityProvider.service.webApiPort }}
+          - path: /.well-known/
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.identityProvider.service.name }}
+                port:
+                  number: {{ .Values.identityProvider.service.webApiPort }}

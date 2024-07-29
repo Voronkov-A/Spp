@@ -8,7 +8,7 @@ public abstract partial class BaseApplicationsController : Microsoft.AspNetCore.
     /// <summary>
     /// Create application.
     /// </summary>
-    [Microsoft.AspNetCore.Mvc.HttpPost("/v1/applications")]
+    [Microsoft.AspNetCore.Mvc.HttpPost("/identity-provider/v1/applications")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> CreateEndpoint(
         [Microsoft.AspNetCore.Mvc.FromBody]
         [System.ComponentModel.DataAnnotations.Required]
@@ -25,7 +25,7 @@ public abstract partial class BaseApplicationsController : Microsoft.AspNetCore.
     /// <summary>
     /// List applications.
     /// </summary>
-    [Microsoft.AspNetCore.Mvc.HttpGet("/v1/applications")]
+    [Microsoft.AspNetCore.Mvc.HttpGet("/identity-provider/v1/applications")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> ListEndpoint(
         [Microsoft.AspNetCore.Mvc.FromQuery(Name = "client_id")]
         [System.ComponentModel.DataAnnotations.Required]

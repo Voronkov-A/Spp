@@ -8,7 +8,7 @@ public abstract partial class BaseAuthController : Microsoft.AspNetCore.Mvc.Cont
     /// <summary>
     /// Authorization callback for debug purposes.
     /// </summary>
-    [Microsoft.AspNetCore.Mvc.HttpGet("/v1/auth/callback")]
+    [Microsoft.AspNetCore.Mvc.HttpGet("/identity-provider/v1/auth/callback")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> CallbackEndpoint(
         [Microsoft.AspNetCore.Mvc.FromQuery(Name = "code")]
         [System.ComponentModel.DataAnnotations.Required]
@@ -16,9 +16,6 @@ public abstract partial class BaseAuthController : Microsoft.AspNetCore.Mvc.Cont
         [Microsoft.AspNetCore.Mvc.FromQuery(Name = "scope")]
         [System.ComponentModel.DataAnnotations.Required]
         string scope,
-        [Microsoft.AspNetCore.Mvc.FromQuery(Name = "session_state")]
-        [System.ComponentModel.DataAnnotations.Required]
-        string sessionState,
         [Microsoft.AspNetCore.Mvc.FromQuery(Name = "iss")]
         [System.ComponentModel.DataAnnotations.Required]
         string iss,
@@ -28,7 +25,6 @@ public abstract partial class BaseAuthController : Microsoft.AspNetCore.Mvc.Cont
         return await Callback(
             code,
             scope,
-            sessionState,
             iss,
             cancellationToken
         );
@@ -37,7 +33,7 @@ public abstract partial class BaseAuthController : Microsoft.AspNetCore.Mvc.Cont
     /// <summary>
     /// Sign in.
     /// </summary>
-    [Microsoft.AspNetCore.Mvc.HttpPost("/v1/auth/sign-in")]
+    [Microsoft.AspNetCore.Mvc.HttpPost("/identity-provider/v1/auth/sign-in")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> SignInEndpoint(
         [Microsoft.AspNetCore.Mvc.FromBody]
         [System.ComponentModel.DataAnnotations.Required]
@@ -57,7 +53,6 @@ public abstract partial class BaseAuthController : Microsoft.AspNetCore.Mvc.Cont
     protected abstract System.Threading.Tasks.Task<CallbackActionResult> Callback(
         string code,
         string scope,
-        string sessionState,
         string iss,
         System.Threading.CancellationToken cancellationToken
     );

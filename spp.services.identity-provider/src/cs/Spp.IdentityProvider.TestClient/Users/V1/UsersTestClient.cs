@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using Spp.Common.Miscellaneous;
+using Spp.Common.Miscellaneous.Serialization;
 
 namespace Spp.IdentityProvider.TestClient.Users.V1;
 
@@ -17,7 +18,7 @@ public partial class UsersTestClient
     }
 
     public UsersTestClient(HttpClient httpClient)
-        : this(httpClient, new JsonSerializerOptions(JsonSerializerDefaults.Web))
+        : this(httpClient, DefaultJsonSerializer.Options)
     {
     }
 

@@ -1,0 +1,34 @@
+imagePullSecret:
+  dockerconfigjson: ref+file://~/.docker/config.json
+imagePullPolicy: Always
+replicas: 2
+debug: true
+image:
+  registry: host.minikube.internal:51443
+  path: spp/identity-provider
+  tag: 0.0.1
+config:
+  logLevel: Debug
+  externalUrl: https://identity-provider.minikube
+  authentication:
+    clientId: identity_provider
+    clientSecret:
+      value: secret
+  superuser:
+    username: superuser
+    password:
+      value: password
+  errors:
+    externalUrl: https://identity-provider.minikube
+  persistence:
+    username: yugabyte
+    password:
+      value: yugabyte
+yugabyteTserver:
+  service:
+    name: yugabyte-tserver
+    sqlPort: 5433
+internalCertificateIssuer:
+  issuer:
+    name: internal-certificate-issuer
+    kind: Issuer

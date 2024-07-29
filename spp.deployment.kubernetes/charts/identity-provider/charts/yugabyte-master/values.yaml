@@ -1,0 +1,14 @@
+imagePullSecret:
+  dockerconfigjson: ref+file://~/.docker/config.json
+imagePullPolicy: Always
+replicas: 2
+debug: true
+image:
+  registry: host.minikube.internal:51443
+  path: spp/yugabyte-master
+  tag: 0.0.1
+config:
+  replicationFactor: 1
+storage:
+  className: hostpath
+  size: 10Gi

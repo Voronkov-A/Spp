@@ -21,14 +21,12 @@ public class AuthController(
     protected override Task<CallbackActionResult> Callback(
         string code,
         string scope,
-        string sessionState,
         string iss,
         CancellationToken cancellationToken)
     {
         var result = CallbackActionResult.Create200(new AuthorizationCallbackParameters(
             code: code,
             scope: scope,
-            sessionState: sessionState,
             iss: iss));
         return Task.FromResult(result);
     }

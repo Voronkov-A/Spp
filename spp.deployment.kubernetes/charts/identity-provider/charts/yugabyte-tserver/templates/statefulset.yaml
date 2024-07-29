@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: yugabyte-tserver
+  labels:
+    app.kubernetes.io/name: yugabyte-tserver
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: yugabyte-tserver
+  replicas: {{ int64 .Values.replicas }}
+  serviceName: yugabyte-tserver
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: yugabyte-tserver
+        helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+        app.kubernetes.io/component: identity-provider
+        app.kubernetes.io/part-of: spp
+    spec:
+      imagePullSecrets:
+        - name: yugabyte-tserver-image-pull-secret
+      containers:
+        - name: yugabyte-tserver
+          image: {{ .Values.image.registry }}/{{ .Values.image.path }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - containerPort: 5433
+            - containerPort: 9000
+            - containerPort: 9100
+          envFrom:
+            - configMapRef:
+                name: yugabyte-tserver
+          env:
+            - name: METADATA_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: SERVICE_5433_NAME
+              value: ysql
+            - name: SERVICE_9042_NAME
+              value: ycql
+            - name: SERVICE_6379_NAME
+              value: yedis
+            - name: SERVICE_9000_NAME
+              value: $(METADATA_NAME)
+            - name: TSERVER_MASTER_ADDRS
+              {{- $namespace := .Release.Namespace }}
+              {{- $master := .Values.yugabyteMaster }}
+              {{- $first := true }}
+              value: {{ range (untilStep 0 (int $master.replicas) 1) }}{{ if $first }}{{ $first = false }}{{ else }},{{ end }}{{ $master.statefulSet.serviceName }}-{{ . }}.{{ $master.service.name }}.{{ $namespace }}.svc.cluster.local:7100{{ end }}
+            - name: RPC_BIND_ADDRESSES
+              value: $(METADATA_NAME).yugabyte-tserver.{{ .Release.Namespace }}.svc.cluster.local:9100,$(METADATA_NAME):9100
+          #readinessProbe:
+          #  exec:
+          #    command:
+          #      - docker-healthcheck.sh
+          #  initialDelaySeconds: 15
+          #  periodSeconds: 15
+          #  timeoutSeconds: 15
+          #  failureThreshold: 20
+          livenessProbe:
+            exec:
+              command:
+                - docker-healthcheck.sh
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 15
+            failureThreshold: 20
+          volumeMounts:
+            - name: data
+              mountPath: /mnt/tserver
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app.kubernetes.io/name: yugabyte-tserver
+          helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+          app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+          app.kubernetes.io/instance: {{ .Release.Name | quote }}
+          app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+          app.kubernetes.io/component: identity-provider
+          app.kubernetes.io/part-of: spp
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.storage.className | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.storage.size | quote }}

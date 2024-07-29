@@ -39,7 +39,7 @@ public class IdentityProviderService : WebApplicationService<IdentityProviderCon
             ClientSecret = "secret",
             RedirectUris = new Uri[]
             {
-                new(webApiUrl, "/v1/auth/callback")
+                new(webApiUrl, "/identity-provider/v1/auth/callback")
             }
         };
         var defaultUserSet = new DefaultUserSetSettings

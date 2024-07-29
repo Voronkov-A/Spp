@@ -1,0 +1,56 @@
+certManager:
+  installationRequired: false
+  namespace: spp-cert-manager
+
+reloader:
+  installationRequired: false
+  namespace: default
+
+identityProvider:
+  installationRequired: true
+  namespace: spp-identity-provider
+  common:
+    imagePullSecret:
+      dockerconfigjson: ref+file:///home/user/.docker/config.json
+    dockerRegistry: host.minikube.internal:51443
+    debug: true
+    config:
+      logLevel: Debug
+      externalHost: identity-provider.minikube
+      authentication:
+        clientId: identity_provider
+        clientSecret:
+          value: secret
+      persistence:
+        username: yugabyte
+        password:
+          value: yugabyte
+  gateway:
+    config:
+      tls:
+        crt: ref+file://certificates/identity-provider/identity-provider.minikube.crt
+        key: ref+file://certificates/identity-provider/identity-provider.minikube.key
+      ca:
+        crt: ref+file://certificates/identity-provider/spp-ca.crt
+  identityProvider:
+    tag: 0.0.1
+    replicas: 2
+    config:
+      superuser:
+        username: superuser
+        password:
+          value: pass
+  yugabyteMaster:
+    tag: 0.0.1
+    replicas: 2
+    config:
+      replicationFactor: 1
+    storage:
+      className: hostpath
+      size: 10Gi
+  yugabyteTserver:
+    tag: 0.0.1
+    replicas: 2
+    storage:
+      className: hostpath
+      size: 10Gi

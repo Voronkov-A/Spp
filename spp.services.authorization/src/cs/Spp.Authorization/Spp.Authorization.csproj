@@ -12,11 +12,8 @@
 		<Content Include="appsettings.json" CopyToOutputDirectory="Always">
 			<Link>appsettings.json</Link>
 		</Content>
-		<Content Include="../../../certificates/localhost.crt" CopyToOutputDirectory="Always">
-			<Link>Certificates/localhost.crt</Link>
-		</Content>
-		<Content Include="../../../certificates/localhost.pfx" CopyToOutputDirectory="Always">
-			<Link>Certificates/localhost.pfx</Link>
+		<Content Include="../../../certificates/*" CopyToOutputDirectory="Always">
+			<Link>Certificates/%(FileName)%(Extension)</Link>
 		</Content>
 		<None Include="..\..\..\contracts\webapi.v1\authorization.auth.yaml">
 			<Link>WebApi\Auth\V1\%(FileName)%(Extension)</Link>

@@ -8,8 +8,10 @@ namespace Spp.IdentityProvider.Initialization;
 
 public class PersistenceInitializer(AuthorizationDbContext authorizationDbContext) : IInitializer
 {
+    private readonly AuthorizationDbContext _authorizationDbContext = authorizationDbContext;
+
     public async Task Initialize(CancellationToken cancellationToken)
     {
-        await authorizationDbContext.Database.MigrateAsync(cancellationToken);
+        await _authorizationDbContext.Database.MigrateAsync(cancellationToken);
     }
 }

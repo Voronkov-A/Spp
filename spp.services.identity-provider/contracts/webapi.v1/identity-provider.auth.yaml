@@ -6,7 +6,7 @@ info:
 
 paths:
 
-  /v1/auth/sign-in:
+  /identity-provider/v1/auth/sign-in:
     post:
       description: Sign in.
       operationId: SignIn
@@ -29,7 +29,7 @@ paths:
         default:
           $ref: '#/components/responses/DefaultErrorResponse'
 
-  /v1/auth/callback:
+  /identity-provider/v1/auth/callback:
     get:
       description: Authorization callback for debug purposes.
       operationId: Callback
@@ -46,12 +46,6 @@ paths:
           in: query
           required: true
           description: Scope.
-          schema:
-            type: string
-        - name: session_state
-          in: query
-          required: true
-          description: Session state.
           schema:
             type: string
         - name: iss
@@ -122,7 +116,6 @@ components:
       required:
         - code
         - scope
-        - session_state
         - iss
       properties:
         code:
@@ -130,9 +123,6 @@ components:
           type: string
         scope:
           description: Scope.
-          type: string
-        session_state:
-          description: Session state.
           type: string
         iss:
           description: Issuer.

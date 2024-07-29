@@ -2,3 +2,4 @@
 /spp-ca/
 /*.error.txt
 /__pycache__/
+/certificates/

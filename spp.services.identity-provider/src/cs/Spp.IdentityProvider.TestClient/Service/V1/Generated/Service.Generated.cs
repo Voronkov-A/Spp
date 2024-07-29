@@ -85,7 +85,7 @@ public partial class ServiceTestClient : IServiceTestClient
     private System.Net.Http.HttpRequestMessage HealthCheck_CreateRequest(
     )
     {
-        var path = "/v1/service/health";
+        var path = "/identity-provider/v1/service/health";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);

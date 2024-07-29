@@ -8,7 +8,7 @@ public abstract partial class BaseUsersController : Microsoft.AspNetCore.Mvc.Con
     /// <summary>
     /// Create user.
     /// </summary>
-    [Microsoft.AspNetCore.Mvc.HttpPost("/v1/users")]
+    [Microsoft.AspNetCore.Mvc.HttpPost("/identity-provider/v1/users")]
     public virtual async System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult> CreateEndpoint(
         [Microsoft.AspNetCore.Mvc.FromBody]
         [System.ComponentModel.DataAnnotations.Required]

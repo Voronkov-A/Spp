@@ -1,11 +1,12 @@
-@base=https://localhost:34008
+@base=https://identity-provider.minikube
 
 ### SignIn
 
-POST {{base}}/v1/auth/sign-in
+POST {{base}}/identity-provider/v1/auth/sign-in
 Content-Type: application/json
 
 {
   "username": "superuser",
-  "password": "pass"
+  "password": "pass",
+  "scopes": "api"
 }

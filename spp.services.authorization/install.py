@@ -1,9 +1,25 @@
 #!/usr/bin/env python3
 
-import os, shutil, traceback
+import argparse, os, shutil, subprocess, traceback
 from pathlib import Path
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--registry',
+        help='Registry.',
+        required=False,
+        default='localhost:51443'
+    )
+    args = parser.parse_args()
+
+    registry: str = args.registry
+    version = '0.0.1'
+    
+    subprocess.run([
+        'docker', 'push', f'{registry}/spp/authorization:{version}'
+    ]).check_returncode()
+
     files_to_copy = Path('build').glob('*.nupkg')
     
     for src in files_to_copy:

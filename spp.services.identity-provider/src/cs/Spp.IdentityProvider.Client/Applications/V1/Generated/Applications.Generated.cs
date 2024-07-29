@@ -104,7 +104,7 @@ public partial class ApplicationsClient : IApplicationsClient, System.IDisposabl
         CreateApplicationRequest createApplicationRequest
     )
     {
-        var path = "/v1/applications";
+        var path = "/identity-provider/v1/applications";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);
@@ -135,7 +135,7 @@ public partial class ApplicationsClient : IApplicationsClient, System.IDisposabl
         string clientId
     )
     {
-        var path = "/v1/applications";
+        var path = "/identity-provider/v1/applications";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);

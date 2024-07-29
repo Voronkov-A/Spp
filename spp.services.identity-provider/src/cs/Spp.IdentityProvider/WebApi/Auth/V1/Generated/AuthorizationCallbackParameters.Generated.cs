@@ -11,13 +11,11 @@ public partial class AuthorizationCallbackParameters
     public AuthorizationCallbackParameters(
         string code,
         string scope,
-        string sessionState,
         string iss
     )
     {
         this.Code = code;
         this.Scope = scope;
-        this.SessionState = sessionState;
         this.Iss = iss;
     }
 
@@ -29,10 +27,6 @@ public partial class AuthorizationCallbackParameters
     /// Scope.
     /// </summary>
     public string Scope { get; }
-    /// <summary>
-    /// Session state.
-    /// </summary>
-    public string SessionState { get; }
     /// <summary>
     /// Issuer.
     /// </summary>

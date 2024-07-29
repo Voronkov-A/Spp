@@ -11,13 +11,11 @@ public partial class AuthorizationCallbackParameters
     public AuthorizationCallbackParameters(
         string code,
         string scope,
-        string sessionState,
         string iss
     )
     {
         this.Code = code;
         this.Scope = scope;
-        this.SessionState = sessionState;
         this.Iss = iss;
     }
 
@@ -31,11 +29,6 @@ public partial class AuthorizationCallbackParameters
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("scope")]
     public string Scope { get; }
-    /// <summary>
-    /// Session state.
-    /// </summary>
-    [System.Text.Json.Serialization.JsonPropertyName("session_state")]
-    public string SessionState { get; }
     /// <summary>
     /// Issuer.
     /// </summary>

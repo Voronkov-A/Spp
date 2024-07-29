@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: identity-provider-token-signature
+  labels:
+    app.kubernetes.io/name: identity-provider
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+spec:
+  secretTemplate:
+    labels:
+      app.kubernetes.io/name: identity-provider
+      helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+      app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+      app.kubernetes.io/instance: {{ .Release.Name | quote }}
+      app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+      app.kubernetes.io/component: identity-provider
+      app.kubernetes.io/part-of: spp
+  commonName: identity-provider
+  secretName: identity-provider-token-signature
+  issuerRef:
+    name: {{ .Values.internalCertificateIssuer.issuer.name }}
+    kind: {{ .Values.internalCertificateIssuer.issuer.kind }}

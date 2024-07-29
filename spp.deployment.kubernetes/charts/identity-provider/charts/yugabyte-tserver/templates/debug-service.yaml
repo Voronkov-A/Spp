@@ -1,0 +1,37 @@
+{{ if .Values.debug }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: yugabyte-tserver-debug
+  labels:
+    app.kubernetes.io/name: yugabyte-tserver
+    helm.sh/chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/component: identity-provider
+    app.kubernetes.io/part-of: spp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: debug
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: yugabyte-tserver
+  ports:
+    - name: sql
+      protocol: TCP
+      port: 5433
+      targetPort: 5433
+      nodePort: 32002
+    - name: ui
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 32003
+    - name: rpc
+      protocol: TCP
+      port: 9100
+      targetPort: 9100
+      nodePort: 32004
+{{ end }}

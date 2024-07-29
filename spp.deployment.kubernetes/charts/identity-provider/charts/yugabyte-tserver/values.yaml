@@ -1,0 +1,18 @@
+imagePullSecret:
+  dockerconfigjson: ref+file://~/.docker/config.json
+imagePullPolicy: Always
+replicas: 2
+debug: true
+image:
+  registry: host.minikube.internal:51443
+  path: spp/yugabyte-tserver
+  tag: 0.0.1
+storage:
+  className: hostpath
+  size: 10Gi
+yugabyteMaster:
+  replicas: 2
+  service:
+    name: yugabyte-master
+  statefulSet:
+    serviceName: yugabyte-master

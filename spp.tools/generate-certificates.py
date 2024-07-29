@@ -9,9 +9,9 @@ from unittest.mock import patch
 def main():
     target_paths = [
         'spp.services.identity-provider/certificates/localhost.crt',
-        'spp.services.identity-provider/certificates/localhost.pfx',
+        'spp.services.identity-provider/certificates/localhost.key',
         'spp.services.authorization/certificates/localhost.crt',
-        'spp.services.authorization/certificates/localhost.pfx'
+        'spp.services.authorization/certificates/localhost.key'
     ]
 
     parser = argparse.ArgumentParser()

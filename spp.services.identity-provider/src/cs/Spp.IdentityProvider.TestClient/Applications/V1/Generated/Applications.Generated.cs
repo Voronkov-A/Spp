@@ -301,7 +301,7 @@ public partial class ApplicationsTestClient : IApplicationsTestClient
         CreateApplicationRequest createApplicationRequest
     )
     {
-        var path = "/v1/applications";
+        var path = "/identity-provider/v1/applications";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);
@@ -332,7 +332,7 @@ public partial class ApplicationsTestClient : IApplicationsTestClient
         string clientId
     )
     {
-        var path = "/v1/applications";
+        var path = "/identity-provider/v1/applications";
 
 
         var uriBuilder = new System.Text.StringBuilder(path);
